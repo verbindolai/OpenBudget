@@ -3,18 +3,35 @@
  */
 
 import 'react-native-get-random-values';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {AppRegistry} from 'react-native';
-import {AppWrapperNonSync} from './app/AppWrapperNonSync';
-import {AppWrapperSync} from './app/AppWrapperSync';
 import {name as appName} from './app.json';
-import {SYNC_CONFIG} from './sync.config';
+import {SafeAreaView, Text} from 'react-native';
+import Realm from 'realm';
 
-const App = () =>
-  SYNC_CONFIG.enabled ? (
-    <AppWrapperSync appId={SYNC_CONFIG.appId} />
-  ) : (
-    <AppWrapperNonSync />
+const TaskSchema = {
+  name: 'Task',
+  properties: {
+    _id: 'int',
+    name: 'string',
+    status: 'string?',
+  },
+  primaryKey: '_id',
+};
+
+const App = () => {
+  Realm.open({
+    path: 'myrealm',
+    schema: [TaskSchema],
+  }).then(realm => {
+    const tasks = realm.objects('Task');
+    console.log(tasks);
+  });
+
+  return (
+    <SafeAreaView>
+      <Text>Hallo</Text>
+    </SafeAreaView>
   );
-
+};
 AppRegistry.registerComponent(appName, () => App);
