@@ -1,37 +1,63 @@
-/**
- * @format
- */
+import "react-native-get-random-values";
+import React, { useEffect } from "react";
+import { AppRegistry, Button, View } from "react-native";
+import { name as appName } from "./app.json";
+import { Text } from "react-native";
+import Realm from "realm";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Header } from "react-native/Libraries/NewAppScreen";
 
-import 'react-native-get-random-values';
-import React, {useEffect} from 'react';
-import {AppRegistry} from 'react-native';
-import {name as appName} from './app.json';
-import {SafeAreaView, Text} from 'react-native';
-import Realm from 'realm';
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const TaskSchema = {
-  name: 'Task',
-  properties: {
-    _id: 'int',
-    name: 'string',
-    status: 'string?',
-  },
-  primaryKey: '_id',
-};
+function HomeScreen({route, navigation}) {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Home Screen</Text>
+      <Button title={'Details'} onPress={() => {
+        navigation.navigate("Details")
+      }}/>
+    </View>
+  );
+}
+
+function DetailsScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+
+    </View>
+  );
+}
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="HomeStack" component={HomeScreen} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
 
 const App = () => {
-  Realm.open({
-    path: 'myrealm',
-    schema: [TaskSchema],
-  }).then(realm => {
-    const tasks = realm.objects('Task');
-    console.log(tasks);
-  });
-
   return (
-    <SafeAreaView>
-      <Text>Hallo</Text>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Tab.Navigator >
+        <Tab.Screen name="Home" component={HomeStack} options={{headerShown: false}}/>
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 AppRegistry.registerComponent(appName, () => App);
