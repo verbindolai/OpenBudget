@@ -4,34 +4,113 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:3229974518186312031",
-      "lastPropertyId": "2:9137234365630558054",
-      "name": "User",
+      "id": "2:2543389042303005847",
+      "lastPropertyId": "4:806349633289023391",
+      "name": "BankAccount",
       "properties": [
         {
-          "id": "1:872503362185135407",
+          "id": "1:4493319673943710328",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:9137234365630558054",
+          "id": "2:7235775964688954095",
           "name": "name",
           "type": 9
+        },
+        {
+          "id": "3:8653384871398342818",
+          "name": "balance",
+          "type": 8
+        },
+        {
+          "id": "4:806349633289023391",
+          "name": "parentAccountId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:66244504846439364",
+          "relationTarget": "BankAccount"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:1461457425419457116",
+      "lastPropertyId": "3:3450523004990117444",
+      "name": "Category",
+      "properties": [
+        {
+          "id": "1:3938294822121058830",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8802038973813960238",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3450523004990117444",
+          "name": "icon",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:8416344571393845253",
+      "lastPropertyId": "5:8727730950916609356",
+      "name": "Transaction",
+      "properties": [
+        {
+          "id": "1:2804409776846343501",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:521439583561532503",
+          "name": "amount",
+          "type": 8
+        },
+        {
+          "id": "3:5384437578711469633",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "4:5186003618741446226",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:8727730950916609356",
+          "name": "categoryId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:5343448165457546362",
+          "relationTarget": "Category"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "1:3229974518186312031",
-  "lastIndexId": "0:0",
+  "lastEntityId": "4:8416344571393845253",
+  "lastIndexId": "2:5343448165457546362",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    3229974518186312031
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    872503362185135407,
+    9137234365630558054
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

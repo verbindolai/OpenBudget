@@ -37,6 +37,8 @@ dependencies:
   path: any
   objectbox: ^1.6.0
   objectbox_flutter_libs: any
+  persistent_bottom_nav_bar: any
+  font_awesome_flutter: ^10.1.0
 
 dev_dependencies:
   flutter_test:

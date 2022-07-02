@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'models/user.dart';
+import 'models/category.dart';
+import 'models/transactions.dart';
 import 'objectbox.dart';
 import 'objectbox.g.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 late ObjectBox objectbox;
 late Admin admin;
@@ -18,126 +20,182 @@ Future<void> main() async {
     admin = Admin(objectbox.store);
   }
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+int test = 0;
 
-  // This widget is the root of your application.
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.red,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ObjectBox Demo'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      body: Center(
+        child: TransactionList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        //Floating action button on Scaffold
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AddTransactionPage()));
+          //code to execute on button press
+        },
+        child: const Icon(Icons.add_rounded), //icon inside button
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        //bottom navigation bar on scaffold
+        color: Colors.redAccent,
+        shape: const CircularNotchedRectangle(), //shape of notch
+        notchMargin:
+            5, //notche margin between floating button and bottom appbar
+        child: Row(
+          //children inside bottom appbar
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.house,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.chartSimple,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.print,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+  // This widget is the root of your application.
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: Home());
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class AddTransactionPage extends StatefulWidget {
+  const AddTransactionPage({Key? key}) : super(key: key);
 
   @override
-  void initState() {
+  State<AddTransactionPage> createState() => _AddTransactionPageState();
+}
+
+class TransactionList extends StatefulWidget {
+  TransactionList({Key? key}) : super(key: key);
+
+  @override
+  State<TransactionList> createState() => _TransactionListState();
+}
+
+class _TransactionListState extends State<TransactionList> {
+  List<Transaction>? transactions;
+
+  @override
+  initState() {
     super.initState();
+    transactions = objectbox.store.box<Transaction>().getAll();
   }
 
-  void _incrementCounter() {
-    final userBox = objectbox.store.box<User>();
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: transactions?.map((transaction) {
+            return ListTile(
+              title: Text("Transaction ${transaction.id}"),
+              subtitle: Text(transaction.amount.toString()),
+              trailing: Text(transaction.date.toString()),
+            );
+          }).toList() ??
+          [],
+    );
+  }
+}
 
-    final user = User("Tina");
-    userBox.put(user);
-    print(userBox.get(1)?.name);
+class _AddTransactionPageState extends State<AddTransactionPage> {
+  String text = "";
+  int number = 0;
 
+  changeText() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      text = "Hello World";
+    });
+  }
+
+  changeNumber() {
+    setState(() {
+      number = number + 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('$test $number'),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the sex this many times:',
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Amount',
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            const TextField(
+              decoration: InputDecoration(
+                labelText: 'Description',
+              ),
+            ),
+            ElevatedButton(
+              child: const Text('Add'),
+              onPressed: () {
+                test++;
+                number = number + 1;
+                // changeText();
+                final transaction = Transaction(100, DateTime.now(), 'Test');
+                transaction.category.target = Category("Test", "Test");
+
+                objectbox.store.box<Transaction>().put(transaction);
+
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
