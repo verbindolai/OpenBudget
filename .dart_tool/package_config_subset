@@ -14,6 +14,10 @@ async
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib/
+bloc
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.3/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-8.0.3/lib/
 boolean_selector
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/
@@ -110,6 +114,10 @@ flat_buffers
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flat_buffers-2.0.5/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flat_buffers-2.0.5/lib/
+flutter_bloc
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/lib/
 flutter_lints
 2.17
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/
@@ -174,6 +182,10 @@ mime
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/mime-1.0.2/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/mime-1.0.2/lib/
+nested
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib/
 objectbox
 2.14
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/objectbox-1.6.0/
@@ -242,6 +254,10 @@ process
 2.14
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib/
+provider
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.3/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.3/lib/
 pub_semver
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-2.1.1/

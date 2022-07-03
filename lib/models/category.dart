@@ -1,5 +1,7 @@
 import 'package:objectbox/objectbox.dart';
 
+import 'group.dart';
+
 @Entity()
 class Category {
   @Id()
@@ -7,6 +9,7 @@ class Category {
 
   String name;
   String icon;
+  final group = ToOne<Group>();
 
   Category(this.name, this.icon);
 
