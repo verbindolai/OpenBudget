@@ -1,4 +1,8 @@
+import 'package:open_budget/main.dart';
+
 import 'objectbox.g.dart'; // created by `flutter pub run build_runner build`
+
+late ObjectBox objectBox;
 
 class ObjectBox {
   /// The Store of this app.

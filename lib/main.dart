@@ -6,18 +6,19 @@ import 'objectbox.dart';
 import 'objectbox.g.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-late ObjectBox objectbox;
+import 'widgets/transaction/transaction_list.dart';
+
 late Admin admin;
 
 Future<void> main() async {
   // This is required so ObjectBox can get the application directory
   WidgetsFlutterBinding.ensureInitialized();
-  objectbox = await ObjectBox.create();
+  objectBox = await ObjectBox.create();
 
   if (Admin.isAvailable()) {
     print("isAvailable");
     // Keep a reference until no longer needed or manually closed.
-    admin = Admin(objectbox.store);
+    admin = Admin(objectBox.store);
   }
 
   runApp(const App());
@@ -112,37 +113,6 @@ class AddTransactionPage extends StatefulWidget {
   State<AddTransactionPage> createState() => _AddTransactionPageState();
 }
 
-class TransactionList extends StatefulWidget {
-  TransactionList({Key? key}) : super(key: key);
-
-  @override
-  State<TransactionList> createState() => _TransactionListState();
-}
-
-class _TransactionListState extends State<TransactionList> {
-  List<Transaction>? transactions;
-
-  @override
-  initState() {
-    super.initState();
-    transactions = objectbox.store.box<Transaction>().getAll();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: transactions?.map((transaction) {
-            return ListTile(
-              title: Text("Transaction ${transaction.id}"),
-              subtitle: Text(transaction.amount.toString()),
-              trailing: Text(transaction.date.toString()),
-            );
-          }).toList() ??
-          [],
-    );
-  }
-}
-
 class _AddTransactionPageState extends State<AddTransactionPage> {
   String text = "";
   int number = 0;
@@ -188,7 +158,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                 final transaction = Transaction(100, DateTime.now(), 'Test');
                 transaction.category.target = Category("Test", "Test");
 
-                objectbox.store.box<Transaction>().put(transaction);
+                objectBox.store.box<Transaction>().put(transaction);
 
                 Navigator.pop(context);
               },
