@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 import 'category.dart';
 
@@ -6,9 +7,9 @@ class Transaction {
   @Id()
   int id = 0;
 
-  double amount;
-  DateTime date;
-  String? description;
+  final double amount;
+  final DateTime date;
+  final String? description;
   final category = ToOne<Category>();
 
   Transaction(this.amount, this.date, [this.description]);
