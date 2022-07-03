@@ -1,4 +1,4 @@
-import 'package:open_budget/objectbox.g.dart';
+import 'package:objectbox/objectbox.dart';
 
 import 'category.dart';
 

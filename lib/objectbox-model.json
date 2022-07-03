@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "2:2543389042303005847",
-      "lastPropertyId": "4:806349633289023391",
+      "lastPropertyId": "7:498641100109928570",
       "name": "BankAccount",
       "properties": [
         {
@@ -31,13 +31,28 @@
           "flags": 520,
           "indexId": "1:66244504846439364",
           "relationTarget": "BankAccount"
+        },
+        {
+          "id": "5:4864580814560402365",
+          "name": "placeholder",
+          "type": 1
+        },
+        {
+          "id": "6:4613624043916398578",
+          "name": "excluded",
+          "type": 1
+        },
+        {
+          "id": "7:498641100109928570",
+          "name": "icon",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "3:1461457425419457116",
-      "lastPropertyId": "3:3450523004990117444",
+      "lastPropertyId": "4:5094063879663474777",
       "name": "Category",
       "properties": [
         {
@@ -55,6 +70,14 @@
           "id": "3:3450523004990117444",
           "name": "icon",
           "type": 9
+        },
+        {
+          "id": "4:5094063879663474777",
+          "name": "groupId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:7922558059609561317",
+          "relationTarget": "Group"
         }
       ],
       "relations": []
@@ -95,10 +118,29 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "5:8481260324345289178",
+      "lastPropertyId": "2:7513837869365402808",
+      "name": "Group",
+      "properties": [
+        {
+          "id": "1:2323514064808005951",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7513837869365402808",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "4:8416344571393845253",
-  "lastIndexId": "2:5343448165457546362",
+  "lastEntityId": "5:8481260324345289178",
+  "lastIndexId": "3:7922558059609561317",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
