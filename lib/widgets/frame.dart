@@ -13,8 +13,11 @@ class Frame extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ObjectBox Demo'),
       ),
-      body: Center(
-        child: TransactionList(),
+      body: Column(
+        children: [
+          ElevatedButton(child: Text("Accounts"), onPressed: () => {}),
+          Expanded(child: TransactionList()),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         //Floating action button on Scaffold
