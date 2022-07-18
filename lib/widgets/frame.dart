@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_budget/widgets/transaction/add_transaction_page.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
+
+import '../bloc/account/account_bloc.dart';
+import 'account/select_account.dart';
 
 class Frame extends StatelessWidget {
   const Frame({Key? key}) : super(key: key);
@@ -15,7 +19,17 @@ class Frame extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ElevatedButton(child: Text("Accounts"), onPressed: () => {}),
+          ElevatedButton(
+              child: Text("Accounts"),
+              onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                                  child: AccountSelector(),
+                                  value: BlocProvider.of<AccountBloc>(context),
+                                )))
+                  }),
           Expanded(child: TransactionList()),
         ],
       ),

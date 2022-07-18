@@ -10,7 +10,7 @@ abstract class AccountEvent extends Equatable {
 class LoadAccount extends AccountEvent {}
 
 class AddAccount extends AccountEvent {
-  final BankAccount account;
+  final Account account;
 
   const AddAccount({required this.account});
 
@@ -19,7 +19,7 @@ class AddAccount extends AccountEvent {
 }
 
 class SelectAccount extends AccountEvent {
-  final BankAccount account;
+  final Account account;
 
   const SelectAccount({required this.account});
 

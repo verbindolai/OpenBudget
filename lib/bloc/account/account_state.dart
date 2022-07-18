@@ -10,8 +10,8 @@ abstract class AccountState extends Equatable {
 class AccountInitial extends AccountState {}
 
 class AccountLoaded extends AccountState {
-  final List<BankAccount> accounts;
-  final BankAccount? selectedAccount;
+  final List<Account> accounts;
+  final Account? selectedAccount;
 
   const AccountLoaded({required this.accounts, required this.selectedAccount});
 

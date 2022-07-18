@@ -1,11 +1,11 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class BankAccount {
+class Account {
   @Id()
   int id = 0;
 
-  final String name;
+  String name;
   double balance;
 
   final DateTime _createdAt = DateTime.now();
@@ -15,12 +15,20 @@ class BankAccount {
 
   String? icon;
 
-  final parentAccount = ToOne<BankAccount>();
+  final parentAccount = ToOne<Account>();
 
   @Backlink('parentAccount')
-  final subAccounts = ToMany<BankAccount>();
+  final subAccounts = ToMany<Account>();
 
-  BankAccount(this.name, [this.balance = 0.0]);
+  Account(this.name, [this.balance = 0.0]);
 
   get createdAt => _createdAt;
+
+  getTreeName() {
+    if (parentAccount.target != null) {
+      return parentAccount.target?.getTreeName() + ':' + name;
+    } else {
+      return name;
+    }
+  }
 }

@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/transaction/transaction_bloc.dart';
 import '../../models/category.dart';
 import '../../models/transactions.dart';
-import '../../objectbox.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({Key? key}) : super(key: key);
@@ -18,7 +16,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add'),
+        title: const Text('Add'),
       ),
       body: Center(
         child: Column(

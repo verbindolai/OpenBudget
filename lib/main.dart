@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:open_budget/widgets/frame.dart';
+import 'bloc/account/account_bloc.dart';
 import 'bloc/transaction/transaction_bloc.dart';
 import 'objectbox.dart';
 import 'objectbox.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'repository/account_repository.dart';
 
 late Admin admin;
 
@@ -23,9 +26,24 @@ class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TransactionBloc()..add(LoadTransaction()),
-      child: const MaterialApp(home: Frame()),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AccountRepository>(
+          create: (context) => AccountRepository(objectBox),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => TransactionBloc()..add(LoadTransaction()),
+          ),
+          BlocProvider(
+            create: (context) => AccountBloc(context.read<AccountRepository>())
+              ..add(LoadAccount()),
+          )
+        ],
+        child: const MaterialApp(home: Frame()),
+      ),
     );
   }
 }

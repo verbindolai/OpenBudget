@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_bloc.dart';
 
 class AccountSelector extends StatefulWidget {
-  AccountSelector({Key? key}) : super(key: key);
+  const AccountSelector({Key? key}) : super(key: key);
 
   @override
   State<AccountSelector> createState() => _AccountSelectorState();
@@ -14,25 +14,32 @@ class _AccountSelectorState extends State<AccountSelector> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Select Account'),
+          title: const Text('Select Account'),
         ),
         body: BlocBuilder<AccountBloc, AccountState>(
           builder: (context, state) {
             if (state is AccountInitial) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (state is AccountLoaded) {
               return ListView(
                 children: state.accounts
-                    .map((account) => ListTile(
-                          title: Text(account.name),
-                          subtitle: Text(account.balance.toString()),
+                    .map((account) => Card(
+                          child: ElevatedButton(
+                              child: Text((account.getTreeName())),
+                              onPressed: () {
+                                // context
+                                //     .read<AccountBloc>()
+                                //     .add(SelectAccount(account: account));
+
+                                Navigator.pop(context);
+                              }),
                         ))
                     .toList(),
               );
             } else {
-              return Center(
+              return const Center(
                 child: Text('Unknown state'),
               );
             }
