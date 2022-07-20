@@ -15,7 +15,6 @@ class Category {
 
   @override
   String toString() {
-    // TODO: implement toString
     return "Category{id: $id, name: $name, icon: $icon}";
   }
 }

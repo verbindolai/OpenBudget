@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class Account {
+class Account extends Equatable {
   @Id()
   int id = 0;
 
@@ -13,7 +14,7 @@ class Account {
   bool placeholder = false;
   bool excluded = false;
 
-  String? icon;
+  String icon = "";
 
   final parentAccount = ToOne<Account>();
 
@@ -31,4 +32,24 @@ class Account {
       return name;
     }
   }
+
+  getTotalBalance() {
+    double total = balance;
+    for (var subAccount in subAccounts) {
+      total += subAccount.getTotalBalance();
+    }
+    return total;
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        balance,
+        placeholder,
+        excluded,
+        icon,
+        subAccounts,
+        parentAccount
+      ];
 }

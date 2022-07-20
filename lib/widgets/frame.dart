@@ -20,15 +20,12 @@ class Frame extends StatelessWidget {
       body: Column(
         children: [
           ElevatedButton(
-              child: Text("Accounts"),
+              child: const Text("Accounts"),
               onPressed: () => {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                                  child: AccountSelector(),
-                                  value: BlocProvider.of<AccountBloc>(context),
-                                )))
+                            builder: (context) => const AccountSelector()))
                   }),
           Expanded(child: TransactionList()),
         ],
