@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
 import 'package:open_budget/widgets/frame.dart';
 import 'bloc/account/account_bloc.dart';
 import 'bloc/transaction/transaction_bloc.dart';
@@ -40,7 +41,10 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => AccountBloc(context.read<AccountRepository>())
               ..add(LoadAccount()),
-          )
+          ),
+          BlocProvider(
+              create: (context) => NavigationBloc()
+                ..add(const SelectNavigation(page: NavigationPage.home))),
         ],
         child: const MaterialApp(home: Frame()),
       ),

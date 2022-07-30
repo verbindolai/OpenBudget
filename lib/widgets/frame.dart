@@ -62,6 +62,13 @@ class Frame extends StatelessWidget {
             ),
             IconButton(
               icon: const FaIcon(
+                FontAwesomeIcons.wallet,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(
                 FontAwesomeIcons.chartSimple,
                 color: Colors.white,
               ),
@@ -69,14 +76,7 @@ class Frame extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(
-                Icons.print,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
+                FontAwesomeIcons.gear,
                 color: Colors.white,
               ),
               onPressed: () {},
