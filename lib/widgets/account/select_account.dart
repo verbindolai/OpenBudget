@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_bloc.dart';
+import 'package:open_budget/widgets/account/create_account.dart';
 
 import '../../models/account.dart';
 
@@ -101,11 +102,17 @@ class AccountTile extends StatelessWidget {
         trailing: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              final bloc = context.read<AccountBloc>();
+              // final bloc = context.read<AccountBloc>();
 
-              final subAccount = Account(account.name + "-sub", 0);
-              subAccount.parentAccount.target = account;
-              bloc.add(AddAccount(account: subAccount));
+              // final subAccount = Account(account.name + "-sub", 0);
+              // subAccount.parentAccount.target = account;
+              // bloc.add(AddAccount(account: subAccount));
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CreateAccount(parentAccount: account)));
             }),
         subtitle: RichText(
             text: TextSpan(children: <TextSpan>[

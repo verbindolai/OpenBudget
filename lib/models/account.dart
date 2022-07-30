@@ -21,7 +21,7 @@ class Account extends Equatable {
   @Backlink('parentAccount')
   final subAccounts = ToMany<Account>();
 
-  Account(this.name, [this.balance = 0.0]);
+  Account(this.name, [this.balance = 0.0, this.placeholder = false]);
 
   get createdAt => _createdAt;
 
