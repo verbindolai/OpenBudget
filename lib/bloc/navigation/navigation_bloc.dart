@@ -7,7 +7,7 @@ part 'navigation_state.dart';
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   NavigationBloc() : super(NavigationInitial()) {
     on<SelectNavigation>((event, emit) {
-      emit(NavigationSelected(page: event.page));
+      emit(NavigationSelected(event.title, page: event.page));
     });
   }
 }

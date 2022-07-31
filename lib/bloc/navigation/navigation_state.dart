@@ -11,8 +11,9 @@ class NavigationInitial extends NavigationState {}
 
 class NavigationSelected extends NavigationState {
   final NavigationPage page;
+  final String title;
 
-  const NavigationSelected({required this.page});
+  const NavigationSelected(this.title, {required this.page});
 
   @override
   List<Object> get props => [page];

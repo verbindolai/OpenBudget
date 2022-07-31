@@ -26,6 +26,7 @@ class _CreateAccountState extends State<CreateAccount> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Account'),
+        backgroundColor: Colors.green,
       ),
       body: Form(
           key: formKey,
@@ -92,6 +93,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Widget buildSubmit() => Builder(
       builder: (context) => ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+          ),
           onPressed: () {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();

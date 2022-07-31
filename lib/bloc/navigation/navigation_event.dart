@@ -9,8 +9,9 @@ abstract class NavigationEvent extends Equatable {
 
 class SelectNavigation extends NavigationEvent {
   final NavigationPage page;
+  final String title;
 
-  const SelectNavigation({required this.page});
+  const SelectNavigation(this.title, {required this.page});
 
   @override
   List<Object> get props => [page];

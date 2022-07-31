@@ -19,6 +19,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add'),
+        backgroundColor: Colors.green,
       ),
       body: Center(
         child: Column(
@@ -35,6 +36,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               ),
             ),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+              ),
               child: const Text('Add'),
               onPressed: () {
                 final transaction = Transaction(100, DateTime.now(), 'Test');

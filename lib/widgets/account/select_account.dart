@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_bloc.dart';
 import 'package:open_budget/widgets/account/create_account.dart';
-
+import "package:intl/intl.dart";
 import '../../models/account.dart';
 
 class AccountSelector extends StatefulWidget {
@@ -18,41 +18,40 @@ class _AccountSelectorState extends State<AccountSelector> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Select Account'),
-            ),
-            body: BlocBuilder<AccountBloc, AccountState>(
-              builder: (context, state) {
-                if (state is AccountLoaded) {
-                  return AccountList(
-                    accounts: state.accounts,
-                  );
-                } else if (state is AccountSelected) {
-                  _selectedAccount = state.account;
-                  return AccountList(
-                    accounts: state.account.subAccounts,
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            )),
-        onWillPop: () async {
-          final bloc = context.read<AccountBloc>();
-          var acc = _selectedAccount;
-          if (acc != null) {
-            if (acc.parentAccount.target != null) {
-              bloc.add(
-                  SelectAccount(account: acc.parentAccount.target as Account));
-            } else {
-              bloc.add(LoadAccount());
-            }
-          }
-          return true;
-        });
+        child: Scaffold(body: BlocBuilder<AccountBloc, AccountState>(
+      builder: (context, state) {
+        if (state is AccountLoaded) {
+          return Scaffold(
+              body: AccountList(
+            accounts: state.accounts,
+          ));
+        } else if (state is AccountSelected) {
+          _selectedAccount = state.account;
+          return Scaffold(
+              appBar: AppBar(
+                title: const Text("Accounts"),
+              ),
+              body: AccountList(
+                accounts: state.account.subAccounts,
+              ));
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    )), onWillPop: () async {
+      final bloc = context.read<AccountBloc>();
+      var acc = _selectedAccount;
+      if (acc != null) {
+        if (acc.parentAccount.target != null) {
+          bloc.add(SelectAccount(account: acc.parentAccount.target as Account));
+        } else {
+          bloc.add(LoadAccount());
+        }
+      }
+      return true;
+    });
   }
 }
 
@@ -102,12 +101,6 @@ class AccountTile extends StatelessWidget {
         trailing: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              // final bloc = context.read<AccountBloc>();
-
-              // final subAccount = Account(account.name + "-sub", 0);
-              // subAccount.parentAccount.target = account;
-              // bloc.add(AddAccount(account: subAccount));
-
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -117,7 +110,7 @@ class AccountTile extends StatelessWidget {
         subtitle: RichText(
             text: TextSpan(children: <TextSpan>[
           TextSpan(
-              text: '${account.getTotalBalance()} €',
+              text: '${numberFormatter.format(account.getTotalBalance())} €',
               style: TextStyle(color: Colors.greenAccent[700])),
           TextSpan(
               text: account.subAccounts.isNotEmpty
@@ -128,3 +121,5 @@ class AccountTile extends StatelessWidget {
         title: Text(account.name));
   }
 }
+
+final numberFormatter = NumberFormat("#,##0.00", "en_US");

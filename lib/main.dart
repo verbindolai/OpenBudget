@@ -44,7 +44,8 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
               create: (context) => NavigationBloc()
-                ..add(const SelectNavigation(page: NavigationPage.home))),
+                ..add(
+                    const SelectNavigation("Home", page: NavigationPage.home))),
         ],
         child: const MaterialApp(home: Frame()),
       ),
