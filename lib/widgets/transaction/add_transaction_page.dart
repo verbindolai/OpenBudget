@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_budget/bloc/account/account_bloc.dart';
+import 'package:open_budget/bloc/account/account_overview_bloc.dart';
+import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/models/account.dart';
 import '../../bloc/transaction/transaction_bloc.dart';
 import '../../models/category.dart';
@@ -25,6 +26,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            buildDropDown(context),
             const TextField(
               decoration: InputDecoration(
                 labelText: 'Amount',
@@ -52,6 +54,34 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildDropDown(BuildContext context) {
+    return BlocBuilder<AccountSelectionBloc, AccountSelectionState>(
+      builder: (context, state) {
+        if (state is AccountSelectionLoaded) {
+          return Container(
+              constraints: const BoxConstraints(maxWidth: 200),
+              child: DropdownButton<int>(
+                isExpanded: true,
+                value: state.selectedAccount?.id,
+                onChanged: (int? value) {
+                  context
+                      .read<AccountSelectionBloc>()
+                      .add(ChooseAccount(accountId: value));
+                },
+                items: state.accounts.map((Account account) {
+                  return DropdownMenuItem<int>(
+                    value: account.id,
+                    child: Text(account.getTreeName()),
+                  );
+                }).toList(),
+              ));
+        } else {
+          return const Text('Loading...');
+        }
+      },
     );
   }
 }

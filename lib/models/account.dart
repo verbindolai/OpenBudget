@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:open_budget/models/transactions.dart';
 
 @Entity()
 class Account extends Equatable {
@@ -13,13 +14,17 @@ class Account extends Equatable {
 
   bool placeholder = false;
   bool excluded = false;
-
   String icon = "";
+  int color = 0xFF000000;
+  String currency = "EUR";
 
   final parentAccount = ToOne<Account>();
 
   @Backlink('parentAccount')
   final subAccounts = ToMany<Account>();
+
+  @Backlink('account')
+  final transactions = ToMany<Transaction>();
 
   Account(this.name, [this.balance = 0.0, this.placeholder = false]);
 
@@ -49,6 +54,8 @@ class Account extends Equatable {
         placeholder,
         excluded,
         icon,
+        color,
+        currency,
         subAccounts,
         parentAccount
       ];

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/account/account_bloc.dart';
+import '../../bloc/account/account_overview_bloc.dart';
 import '../../models/account.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -20,6 +20,8 @@ class _CreateAccountState extends State<CreateAccount> {
   String _name = '';
   double _initialBalance = 0.0;
   bool _isPlaceholderAccount = false;
+  String _currency = "";
+  int _color = 0xFF000000;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,8 @@ class _CreateAccountState extends State<CreateAccount> {
             children: [
               buildAccountName(),
               buildAccountBalance(),
+              buildAccountCurrency(),
+              buildAccountColor(),
               buildIsPlaceholderAccount(),
               buildSubmit()
             ],
@@ -56,6 +60,42 @@ class _CreateAccountState extends State<CreateAccount> {
         maxLength: 32,
         onSaved: (value) => {
           if (value != null) {_name = value}
+        },
+      );
+
+  Widget buildAccountCurrency() => TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Account Currency',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please enter an account currency';
+          }
+          return null;
+        },
+        maxLength: 3,
+        onSaved: (value) => {
+          if (value != null) {_currency = value}
+        },
+      );
+
+  Widget buildAccountColor() => TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Account color',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please enter a color';
+          }
+          return null;
+        },
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        maxLength: 32,
+        onSaved: (value) => {
+          if (value != null) {_color = int.parse(value)}
         },
       );
 
@@ -99,9 +139,11 @@ class _CreateAccountState extends State<CreateAccount> {
           onPressed: () {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();
-              final bloc = context.read<AccountBloc>();
+              final bloc = context.read<AccountOverviewBloc>();
               final subAccount =
                   Account(_name, _initialBalance, _isPlaceholderAccount);
+              subAccount.color = _color;
+              subAccount.currency = _currency;
               subAccount.parentAccount.target = widget.parentAccount;
               bloc.add(AddAccount(account: subAccount));
               Navigator.pop(context);

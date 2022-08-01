@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
-import 'package:open_budget/widgets/account/select_account.dart';
+import 'package:open_budget/widgets/account/account_overview.dart';
 import 'package:open_budget/widgets/transaction/add_transaction_page.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
+
+import '../bloc/transaction/transaction_bloc.dart';
 
 class Frame extends StatelessWidget {
   const Frame({Key? key}) : super(key: key);
@@ -23,7 +26,7 @@ class Frame extends StatelessWidget {
                 case NavigationPage.home:
                   return TransactionList();
                 case NavigationPage.accounts:
-                  return const AccountSelector();
+                  return const AccountOverview();
                 case NavigationPage.reports:
                   return Container();
                 case NavigationPage.settings:
@@ -35,6 +38,10 @@ class Frame extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
               //Floating action button on Scaffold
               onPressed: () {
+                context
+                    .read<AccountSelectionBloc>()
+                    .add(LoadAccountSelection());
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(

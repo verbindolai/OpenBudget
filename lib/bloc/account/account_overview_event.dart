@@ -1,15 +1,15 @@
-part of 'account_bloc.dart';
+part of 'account_overview_bloc.dart';
 
-abstract class AccountEvent extends Equatable {
-  const AccountEvent();
+abstract class AccountOverviewEvent extends Equatable {
+  const AccountOverviewEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class LoadAccount extends AccountEvent {}
+class LoadAccount extends AccountOverviewEvent {}
 
-class AddAccount extends AccountEvent {
+class AddAccount extends AccountOverviewEvent {
   final Account account;
 
   const AddAccount({required this.account});
@@ -18,7 +18,7 @@ class AddAccount extends AccountEvent {
   List<Object> get props => [account];
 }
 
-class AddSubAccount extends AccountEvent {
+class AddSubAccount extends AccountOverviewEvent {
   final int accountId;
   final Account subAccount;
 
@@ -28,16 +28,16 @@ class AddSubAccount extends AccountEvent {
   List<Object> get props => [subAccount, accountId];
 }
 
-class SelectAccount extends AccountEvent {
-  final Account account;
+class SelectAccount extends AccountOverviewEvent {
+  final Account? account;
 
   const SelectAccount({required this.account});
 
   @override
-  List<Object> get props => [account];
+  List<Object?> get props => [account];
 }
 
-class UpdateAccount extends AccountEvent {
+class UpdateAccount extends AccountOverviewEvent {
   final Account account;
 
   const UpdateAccount({required this.account});

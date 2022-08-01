@@ -1,15 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+
 import '../../models/account.dart';
 import '../../repository/account_repository.dart';
-part 'account_event.dart';
-part 'account_state.dart';
+part 'account_overview_event.dart';
+part 'account_overview_state.dart';
 
-class AccountBloc extends Bloc<AccountEvent, AccountState> {
+class AccountOverviewBloc
+    extends Bloc<AccountOverviewEvent, AccountOverviewState> {
   final AccountRepository _accountRepository;
 
-  AccountBloc(this._accountRepository) : super(AccountInitial()) {
+  AccountOverviewBloc(this._accountRepository) : super(AccountInitial()) {
     on<LoadAccount>((event, emit) async {
       if (state is AccountInitial || state is AccountSelected) {
         emit(AccountLoaded(
@@ -25,7 +26,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       }
       if (state is AccountSelected) {
         final acc = await _accountRepository
-            .getAccount((state as AccountSelected).account.id);
+            .getAccount((state as AccountSelected).account!.id);
         if (acc != null) {
           emit(AccountSelected(account: acc));
         }
@@ -44,9 +45,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(AccountLoaded(accounts: [...accounts]));
       }
     });
-    on<SelectAccount>((event, emit) {
+    on<SelectAccount>((event, emit) async {
       if (state is AccountLoaded || state is AccountSelected) {
-        emit(AccountSelected(account: event.account));
+        if (event.account != null) {
+          emit(AccountSelected(account: event.account));
+        } else {
+          emit(AccountLoaded(
+              accounts: await _accountRepository.getAllMainAccounts()));
+        }
       }
     });
     on<UpdateAccount>((event, emit) async {
