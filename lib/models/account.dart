@@ -17,6 +17,7 @@ class Account extends Equatable {
   String icon = "";
   int color = 0xFF000000;
   String currency = "EUR";
+  bool favorite = false;
 
   final parentAccount = ToOne<Account>();
 
@@ -26,7 +27,7 @@ class Account extends Equatable {
   @Backlink('account')
   final transactions = ToMany<Transaction>();
 
-  Account(this.name, [this.balance = 0.0, this.placeholder = false]);
+  Account([this.name = "", this.balance = 0.0, this.placeholder = false]);
 
   get createdAt => _createdAt;
 
@@ -57,6 +58,8 @@ class Account extends Equatable {
         color,
         currency,
         subAccounts,
-        parentAccount
+        parentAccount,
+        favorite,
+        createdAt,
       ];
 }

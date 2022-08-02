@@ -18,16 +18,6 @@ class SaveAccount extends AccountOverviewEvent {
   List<Object> get props => [account];
 }
 
-class AddSubAccount extends AccountOverviewEvent {
-  final int accountId;
-  final Account subAccount;
-
-  const AddSubAccount(this.accountId, this.subAccount);
-
-  @override
-  List<Object> get props => [subAccount, accountId];
-}
-
 class SelectAccount extends AccountOverviewEvent {
   final Account? account;
 
@@ -37,11 +27,11 @@ class SelectAccount extends AccountOverviewEvent {
   List<Object?> get props => [account];
 }
 
-class UpdateAccount extends AccountOverviewEvent {
-  final Account account;
+class DeleteAccount extends AccountOverviewEvent {
+  final int id;
 
-  const UpdateAccount({required this.account});
+  const DeleteAccount({required this.id});
 
   @override
-  List<Object> get props => [account];
+  List<Object> get props => [id];
 }

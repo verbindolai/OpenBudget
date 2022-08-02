@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5536274281472305973",
-      "lastPropertyId": "9:252212928601245667",
+      "lastPropertyId": "10:4012986236756577634",
       "name": "Account",
       "properties": [
         {
@@ -56,6 +56,11 @@
           "flags": 520,
           "indexId": "1:5816227741596461258",
           "relationTarget": "Account"
+        },
+        {
+          "id": "10:4012986236756577634",
+          "name": "favorite",
+          "type": 1
         }
       ],
       "relations": []
@@ -113,7 +118,7 @@
     },
     {
       "id": "4:8919923321378629425",
-      "lastPropertyId": "5:4101493532113199856",
+      "lastPropertyId": "6:8061321823699023089",
       "name": "Transaction",
       "properties": [
         {
@@ -144,13 +149,21 @@
           "flags": 520,
           "indexId": "3:7484643593127634052",
           "relationTarget": "Category"
+        },
+        {
+          "id": "6:8061321823699023089",
+          "name": "accountId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "4:2653802597011209648",
+          "relationTarget": "Account"
         }
       ],
       "relations": []
     }
   ],
   "lastEntityId": "4:8919923321378629425",
-  "lastIndexId": "3:7484643593127634052",
+  "lastIndexId": "4:2653802597011209648",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

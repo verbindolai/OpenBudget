@@ -20,8 +20,8 @@ class AccountRepository {
     return objectBox.store.box<Account>().put(account);
   }
 
-  Future<void> deleteAccount(Account account) async {
-    objectBox.store.box<Account>().remove(account.id);
+  Future<void> delete(int accountId) async {
+    objectBox.store.box<Account>().remove(accountId);
   }
 
   Future<List<Account>> getAllMainAccounts() async {

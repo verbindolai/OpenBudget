@@ -122,6 +122,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "confirm_dialog",
+      "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/confirm_dialog-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "convert",
       "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/convert-3.0.2",
       "packageUri": "lib/",
@@ -560,7 +566,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-08-02T13:45:27.603429Z",
+  "generated": "2022-08-02T16:18:11.682352Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

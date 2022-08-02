@@ -19,28 +19,19 @@ class AccountOverviewBloc
     });
     on<SaveAccount>((event, emit) async {
       _accountRepository.save(event.account);
-
       if (state is AccountLoaded) {
         emit(AccountLoaded(
             accounts: await _accountRepository.getAllMainAccounts()));
       }
       if (state is AccountSelected) {
-        emit(AccountSelected(account: (state as AccountSelected).account));
+        final acc = await _accountRepository
+            .getAccount((state as AccountSelected).account!.id);
+        if (acc != null) {
+          emit(AccountSelected(account: acc));
+        }
       }
     });
-    on<AddSubAccount>((event, emit) async {
-      if (state is AccountLoaded) {
-        final List<Account> accounts = (state as AccountLoaded).accounts;
-        await _accountRepository.save(event.subAccount);
 
-        accounts
-            .firstWhere((element) => element.id == event.accountId)
-            .subAccounts
-            .add(event.subAccount);
-
-        emit(AccountLoaded(accounts: [...accounts]));
-      }
-    });
     on<SelectAccount>((event, emit) async {
       if (state is AccountLoaded || state is AccountSelected) {
         if (event.account != null) {
@@ -48,6 +39,20 @@ class AccountOverviewBloc
         } else {
           emit(AccountLoaded(
               accounts: await _accountRepository.getAllMainAccounts()));
+        }
+      }
+    });
+    on<DeleteAccount>((event, emit) async {
+      _accountRepository.delete(event.id);
+      if (state is AccountLoaded) {
+        emit(AccountLoaded(
+            accounts: await _accountRepository.getAllMainAccounts()));
+      }
+      if (state is AccountSelected) {
+        final acc = await _accountRepository
+            .getAccount((state as AccountSelected).account!.id);
+        if (acc != null) {
+          emit(AccountSelected(account: acc));
         }
       }
     });

@@ -31,8 +31,10 @@ const List<Color> colors = [
 
 class EditAccount extends StatefulWidget {
   final Account? parentAccount;
+  final Account account;
 
-  const EditAccount({Key? key, this.parentAccount}) : super(key: key);
+  const EditAccount({Key? key, this.parentAccount, required this.account})
+      : super(key: key);
 
   @override
   State<EditAccount> createState() => _EditAccountState();
@@ -40,12 +42,6 @@ class EditAccount extends StatefulWidget {
 
 class _EditAccountState extends State<EditAccount> {
   final formKey = GlobalKey<FormState>();
-
-  String _name = '';
-  double _initialBalance = 0.0;
-  bool _isPlaceholderAccount = false;
-  String _currency = "EUR";
-  int _color = 0xFF000000;
 
   @override
   Widget build(BuildContext context) {
@@ -129,9 +125,10 @@ class _EditAccountState extends State<EditAccount> {
           }
           return null;
         },
+        initialValue: widget.account.name,
         maxLength: 32,
         onSaved: (value) => {
-          if (value != null) {_name = value}
+          if (value != null) {widget.account.name = value}
         },
       );
 
@@ -142,18 +139,18 @@ class _EditAccountState extends State<EditAccount> {
             context: context,
             onSelect: (Currency currency) {
               setState(() {
-                _currency = currency.code;
+                widget.account.currency = currency.code;
               });
             });
       },
       trailing: OutlinedButton(
-          child: Text(_currency),
+          child: Text(widget.account.currency),
           onPressed: () {
             showCurrencyPicker(
                 context: context,
                 onSelect: (Currency currency) {
                   setState(() {
-                    _currency = currency.code;
+                    widget.account.currency = currency.code;
                   });
                 });
           }));
@@ -166,13 +163,13 @@ class _EditAccountState extends State<EditAccount> {
           builder: (context) => AlertDialog(
             title: const Text('Select a color'),
             content: BlockPicker(
-              pickerColor: Color(_color),
+              pickerColor: Color(widget.account.color),
               availableColors: colors,
               layoutBuilder: pickerLayoutBuilder,
               itemBuilder: pickerItemBuilder,
               onColorChanged: (color) {
                 setState(() {
-                  _color = color.value;
+                  widget.account.color = color.value;
                 });
               },
             ),
@@ -192,13 +189,13 @@ class _EditAccountState extends State<EditAccount> {
             builder: (context) => AlertDialog(
               title: const Text('Select a color'),
               content: BlockPicker(
-                pickerColor: Color(_color),
+                pickerColor: Color(widget.account.color),
                 availableColors: colors,
                 layoutBuilder: pickerLayoutBuilder,
                 itemBuilder: pickerItemBuilder,
                 onColorChanged: (color) {
                   setState(() {
-                    _color = color.value;
+                    widget.account.color = color.value;
                   });
                 },
               ),
@@ -212,7 +209,8 @@ class _EditAccountState extends State<EditAccount> {
           );
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Color(_color))),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Color(widget.account.color))),
         child: const Text(""),
       ));
 
@@ -230,19 +228,20 @@ class _EditAccountState extends State<EditAccount> {
         keyboardType: TextInputType.number,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         maxLength: 32,
+        initialValue: widget.account.balance.toString(),
         onSaved: (value) => {
-          if (value != null) {_initialBalance = double.parse(value)}
+          if (value != null) {widget.account.balance = double.parse(value)}
         },
       );
 
   //Checkbox
   Widget buildIsPlaceholderAccount() => CheckboxListTile(
         title: const Text('Is Placeholder Account'),
-        value: _isPlaceholderAccount,
+        value: widget.account.placeholder,
         onChanged: (value) {
           if (value != null) {
             setState(() {
-              _isPlaceholderAccount = value;
+              widget.account.placeholder = value;
             });
           }
         },
@@ -257,12 +256,10 @@ class _EditAccountState extends State<EditAccount> {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();
               final bloc = context.read<AccountOverviewBloc>();
-              final subAccount =
-                  Account(_name, _initialBalance, _isPlaceholderAccount);
-              subAccount.color = _color;
-              subAccount.currency = _currency;
-              subAccount.parentAccount.target = widget.parentAccount;
-              bloc.add(SaveAccount(account: subAccount));
+              if (widget.parentAccount != null) {
+                widget.account.parentAccount.target = widget.parentAccount;
+              }
+              bloc.add(SaveAccount(account: widget.account));
               Navigator.pop(context);
             }
           },
