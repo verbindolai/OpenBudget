@@ -17,25 +17,21 @@ class AccountOverviewBloc
             accounts: await _accountRepository.getAllMainAccounts()));
       }
     });
-    on<AddAccount>((event, emit) async {
-      _accountRepository.createAccount(event.account);
+    on<SaveAccount>((event, emit) async {
+      _accountRepository.save(event.account);
 
       if (state is AccountLoaded) {
         emit(AccountLoaded(
             accounts: await _accountRepository.getAllMainAccounts()));
       }
       if (state is AccountSelected) {
-        final acc = await _accountRepository
-            .getAccount((state as AccountSelected).account!.id);
-        if (acc != null) {
-          emit(AccountSelected(account: acc));
-        }
+        emit(AccountSelected(account: (state as AccountSelected).account));
       }
     });
     on<AddSubAccount>((event, emit) async {
       if (state is AccountLoaded) {
         final List<Account> accounts = (state as AccountLoaded).accounts;
-        await _accountRepository.createAccount(event.subAccount);
+        await _accountRepository.save(event.subAccount);
 
         accounts
             .firstWhere((element) => element.id == event.accountId)
@@ -53,12 +49,6 @@ class AccountOverviewBloc
           emit(AccountLoaded(
               accounts: await _accountRepository.getAllMainAccounts()));
         }
-      }
-    });
-    on<UpdateAccount>((event, emit) async {
-      if (state is AccountLoaded) {
-        _accountRepository.updateAccount(event.account);
-        emit(AccountLoaded(accounts: (state as AccountLoaded).accounts));
       }
     });
   }

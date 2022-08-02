@@ -90,6 +90,10 @@ cupertino_icons
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.5/lib/
+currency_picker
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/currency_picker-2.0.11/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/currency_picker-2.0.11/lib/
 dart_style
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-2.2.3/
@@ -122,6 +126,10 @@ flutter_bloc
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1/lib/
+flutter_colorpicker
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3/lib/
 flutter_lints
 2.17
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-2.0.1/

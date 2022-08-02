@@ -140,6 +140,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "currency_picker",
+      "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/currency_picker-2.0.11",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "dart_style",
       "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-2.2.3",
       "packageUri": "lib/",
@@ -190,6 +196,12 @@
     {
       "name": "flutter_bloc",
       "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-8.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_colorpicker",
+      "rootUri": "file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-1.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -548,7 +560,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-07-30T16:47:08.184475Z",
+  "generated": "2022-08-02T13:45:27.603429Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

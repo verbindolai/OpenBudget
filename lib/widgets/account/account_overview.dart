@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import "package:intl/intl.dart";
 import '../../models/account.dart';
-import 'create_account.dart';
+import 'edit_account.dart';
 
 class AccountOverview extends StatefulWidget {
   const AccountOverview({Key? key}) : super(key: key);
@@ -179,7 +179,7 @@ class AddAccountButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CreateAccount(parentAccount: account)));
+                builder: (context) => EditAccount(parentAccount: account)));
       }),
       child: const Icon(Icons.account_balance_wallet),
     );

@@ -16,12 +16,8 @@ class AccountRepository {
     return objectBox.store.box<Account>().getAll();
   }
 
-  Future<int> createAccount(Account account) async {
+  Future<int> save(Account account) async {
     return objectBox.store.box<Account>().put(account);
-  }
-
-  Future<void> updateAccount(Account account) async {
-    objectBox.store.box<Account>().put(account);
   }
 
   Future<void> deleteAccount(Account account) async {

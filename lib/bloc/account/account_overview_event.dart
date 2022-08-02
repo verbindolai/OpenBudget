@@ -9,10 +9,10 @@ abstract class AccountOverviewEvent extends Equatable {
 
 class LoadAccount extends AccountOverviewEvent {}
 
-class AddAccount extends AccountOverviewEvent {
+class SaveAccount extends AccountOverviewEvent {
   final Account account;
 
-  const AddAccount({required this.account});
+  const SaveAccount({required this.account});
 
   @override
   List<Object> get props => [account];
