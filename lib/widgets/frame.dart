@@ -4,10 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
 import 'package:open_budget/widgets/account/account_overview.dart';
-import 'package:open_budget/widgets/transaction/add_transaction_page.dart';
+import 'package:open_budget/widgets/transaction/edit_transaction_page.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
 
 import '../bloc/transaction/transaction_bloc.dart';
+import '../models/transactions.dart';
 
 class Frame extends StatelessWidget {
   const Frame({Key? key}) : super(key: key);
@@ -45,7 +46,9 @@ class Frame extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AddTransactionPage()));
+                        builder: (context) => EditTransactionPage(
+                              transaction: Transaction(0, DateTime.now()),
+                            )));
                 //code to execute on button press
               },
               child: const Icon(Icons.add_rounded), //icon inside button

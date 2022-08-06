@@ -17,8 +17,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<AddTransaction>((event, emit) {
       if (state is TransactionLoaded) {
         objectBox.store.box<Transaction>().put(event.transaction);
-        emit(TransactionLoaded(
-            (state as TransactionLoaded).transactions..add(event.transaction)));
+        emit(TransactionLoaded(objectBox.store.box<Transaction>().getAll()));
       }
     });
   }

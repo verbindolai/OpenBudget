@@ -8,9 +8,9 @@ class Transaction extends Equatable {
   @Id()
   int id = 0;
 
-  final double amount;
-  final DateTime date;
-  final String? description;
+  double amount;
+  DateTime date;
+  String? description;
   final category = ToOne<Category>();
 
   final account = ToOne<Account>();

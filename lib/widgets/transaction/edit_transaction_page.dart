@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_budget/bloc/account/account_selection_bloc.dart';
+import 'package:open_budget/bloc/transaction/transaction_bloc.dart';
+import 'package:open_budget/models/account.dart';
+import '../../input_calculator/input_calculator.dart';
+import '../../models/transactions.dart';
+
+class EditTransactionPage extends StatefulWidget {
+  final Transaction transaction;
+
+  const EditTransactionPage({Key? key, required this.transaction})
+      : super(key: key);
+
+  @override
+  State<EditTransactionPage> createState() => _EditTransactionPageState();
+}
+
+class _EditTransactionPageState extends State<EditTransactionPage> {
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add'),
+        backgroundColor: Colors.green,
+      ),
+      body: Form(
+          key: formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              buildDropDown(context),
+              buildTransactionAmount(),
+              buildTransactionDescription(),
+              buildSubmit()
+            ],
+          )),
+    );
+  }
+
+  Widget buildTransactionDescription() => Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Description',
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) {
+          return null;
+        },
+        maxLength: 128,
+        onSaved: (value) => {
+          if (value != null) {widget.transaction.description = value}
+        },
+      ));
+  Widget buildTransactionAmount() => Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: CalculatorTextFormField(
+        initialValue: widget.transaction.amount,
+        validator: (value) {
+          if (value == "0.0") {
+            return 'Please enter an amount';
+          }
+          return null;
+        },
+        inputDecoration: const InputDecoration(
+          labelText: 'Transaction amount',
+          border: OutlineInputBorder(),
+        ),
+        theme: CalculatorThemes.flat,
+        onSubmitted: (value) {
+          if (value != null) {
+            widget.transaction.amount = value;
+          }
+        },
+      ));
+
+  Widget buildDropDown(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        child: BlocBuilder<AccountSelectionBloc, AccountSelectionState>(
+          builder: (context, state) {
+            if (state is AccountSelectionLoaded) {
+              return Container(
+                  constraints: const BoxConstraints(maxWidth: 200),
+                  child: DropdownButtonFormField<int>(
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select an account';
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Account',
+                      border: OutlineInputBorder(),
+                    ),
+                    isExpanded: true,
+                    value: widget.transaction.account.target?.id,
+                    onChanged: (int? value) {
+                      context
+                          .read<AccountSelectionBloc>()
+                          .add(ChooseAccount(accountId: value));
+                    },
+                    items: state.accounts.map((Account account) {
+                      return DropdownMenuItem<int>(
+                        value: account.id,
+                        child: Text(account.getTreeName()),
+                      );
+                    }).toList(),
+                  ));
+            } else {
+              return const Text('Loading...');
+            }
+          },
+        ));
+  }
+
+  Widget buildSubmit() => Builder(
+      builder: (context) =>
+          BlocBuilder<AccountSelectionBloc, AccountSelectionState>(
+            builder: (context, state) {
+              if (state is AccountSelectionLoaded) {
+                return ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        widget.transaction.account.target =
+                            state.selectedAccount;
+                        formKey.currentState!.save();
+
+                        context
+                            .read<TransactionBloc>()
+                            .add(AddTransaction(widget.transaction));
+                      }
+                    },
+                    child: const Text("Save"));
+              } else {
+                return const Text('Loading...');
+              }
+            },
+          ));
+}

@@ -1,5 +1,5 @@
 import 'package:open_budget/objectbox.dart';
-import 'package:open_budget/objectbox.g.dart';
+import 'package:stack/stack.dart';
 
 import '../models/account.dart';
 
@@ -8,23 +8,30 @@ class AccountRepository {
 
   AccountRepository(this.objectBox);
 
-  Future<Account?> getAccount(int id) async {
+  getAccount(int id) {
     return objectBox.store.box<Account>().get(id);
   }
 
-  Future<List<Account>> getAccounts() async {
+  List<Account> getAccounts() {
     return objectBox.store.box<Account>().getAll();
   }
 
-  Future<int> save(Account account) async {
+  save(Account account) {
     return objectBox.store.box<Account>().put(account);
   }
 
-  Future<void> delete(int accountId) async {
+  delete(int accountId) {
     objectBox.store.box<Account>().remove(accountId);
   }
 
-  Future<List<Account>> getAllMainAccounts() async {
+  int deleteAccountTree(Account account) {
+    List<Account> accounts = accountTreeToListIterative(account);
+    return objectBox.store
+        .box<Account>()
+        .removeMany(accounts.map((a) => a.id).toList());
+  }
+
+  getAllMainAccounts() {
     // QueryBuilder<Account> builder = objectBox.store.box<Account>().query();
     // builder.link(Account_.parentAccount, Account_.parentAccount.isNull());
     // return builder.build().find();
@@ -43,4 +50,17 @@ class AccountRepository {
   //   print(subAccount.name);
   // });
 
+  accountTreeToListIterative(Account account) {
+    final Stack<Account> stack = Stack<Account>();
+    stack.push(account);
+    final List<Account> list = [];
+    while (stack.isNotEmpty) {
+      final Account current = stack.pop();
+      list.add(current);
+      for (final subAccount in current.subAccounts) {
+        stack.push(subAccount);
+      }
+    }
+    return list;
+  }
 }

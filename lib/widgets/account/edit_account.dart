@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../bloc/account/account_overview_bloc.dart';
+import '../../input_calculator/input_calculator.dart';
 import '../../models/account.dart';
 
 const List<Color> colors = [
@@ -214,23 +215,27 @@ class _EditAccountState extends State<EditAccount> {
         child: const Text(""),
       ));
 
-  Widget buildAccountBalance() => TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Account Balance',
-          border: OutlineInputBorder(),
-        ),
+  Widget buildAccountBalance() => CalculatorTextFormField(
         validator: (value) {
           if (value!.isEmpty) {
             return 'Please enter an initial balance';
           }
           return null;
         },
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        maxLength: 32,
-        initialValue: widget.account.balance.toString(),
-        onSaved: (value) => {
-          if (value != null) {widget.account.balance = double.parse(value)}
+        inputDecoration: const InputDecoration(
+          labelText: 'Account Balance',
+          border: OutlineInputBorder(),
+        ),
+        theme: CalculatorThemes.flat,
+        initialValue: widget.account.balance,
+        onSubmitted: (value) {
+          if (value != null) {
+            if (widget.account.id != 0) {
+              final difference = value - widget.account.balance;
+              print(difference);
+            }
+            widget.account.balance = value;
+          }
         },
       );
 

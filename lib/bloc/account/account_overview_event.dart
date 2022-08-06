@@ -28,10 +28,10 @@ class SelectAccount extends AccountOverviewEvent {
 }
 
 class DeleteAccount extends AccountOverviewEvent {
-  final int id;
+  final Account account;
 
-  const DeleteAccount({required this.id});
+  const DeleteAccount({required this.account});
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [account];
 }

@@ -162,6 +162,10 @@ http_parser
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.1/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.1/lib/
+input_calculator
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/input_calculator-2.0.0/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/input_calculator-2.0.0/lib/
 intl
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
@@ -302,6 +306,10 @@ source_span
 2.14
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.2/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.2/lib/
+stack
+2.12
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/stack-0.2.1/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/stack-0.2.1/lib/
 stack_trace
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/

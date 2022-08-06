@@ -45,6 +45,8 @@ dependencies:
   currency_picker: ^2.0.11
   flutter_colorpicker: ^1.0.3
   confirm_dialog: ^1.0.1
+  stack: ^0.2.1
+  input_calculator: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -13,8 +13,8 @@ class AccountSelectionBloc
 
   AccountSelectionBloc(this._accountRepository)
       : super(AccountSelectionInitial()) {
-    on<LoadAccountSelection>((event, emit) async {
-      final accounts = await _accountRepository.getAccounts();
+    on<LoadAccountSelection>((event, emit) {
+      final accounts = _accountRepository.getAccounts();
       accounts.sort((a, b) {
         return a.getTreeName().compareTo(b.getTreeName());
       });
@@ -23,9 +23,9 @@ class AccountSelectionBloc
           accounts: accounts,
           selectedAccount: accounts.isNotEmpty ? accounts[0] : null));
     });
-    on<ChooseAccount>((event, emit) async {
+    on<ChooseAccount>((event, emit) {
       if (state is AccountSelectionLoaded) {
-        final List<Account> accounts = await _accountRepository.getAccounts();
+        final List<Account> accounts = _accountRepository.getAccounts();
         accounts.sort((a, b) {
           return a.getTreeName().compareTo(b.getTreeName());
         });

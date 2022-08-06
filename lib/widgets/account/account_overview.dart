@@ -197,7 +197,7 @@ class AccountTile extends StatelessWidget {
                                                       final bloc = context.read<
                                                           AccountOverviewBloc>();
                                                       bloc.add(DeleteAccount(
-                                                          id: account.id));
+                                                          account: account));
                                                       Navigator.pop(context);
                                                     }
                                                   },

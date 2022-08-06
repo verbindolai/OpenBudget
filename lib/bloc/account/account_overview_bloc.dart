@@ -11,20 +11,18 @@ class AccountOverviewBloc
   final AccountRepository _accountRepository;
 
   AccountOverviewBloc(this._accountRepository) : super(AccountInitial()) {
-    on<LoadAccount>((event, emit) async {
+    on<LoadAccount>((event, emit) {
       if (state is AccountInitial || state is AccountSelected) {
-        emit(AccountLoaded(
-            accounts: await _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
       }
     });
-    on<SaveAccount>((event, emit) async {
+    on<SaveAccount>((event, emit) {
       _accountRepository.save(event.account);
       if (state is AccountLoaded) {
-        emit(AccountLoaded(
-            accounts: await _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
       }
       if (state is AccountSelected) {
-        final acc = await _accountRepository
+        final acc = _accountRepository
             .getAccount((state as AccountSelected).account!.id);
         if (acc != null) {
           emit(AccountSelected(account: acc));
@@ -32,24 +30,24 @@ class AccountOverviewBloc
       }
     });
 
-    on<SelectAccount>((event, emit) async {
+    on<SelectAccount>((event, emit) {
       if (state is AccountLoaded || state is AccountSelected) {
         if (event.account != null) {
           emit(AccountSelected(account: event.account));
         } else {
-          emit(AccountLoaded(
-              accounts: await _accountRepository.getAllMainAccounts()));
+          emit(
+              AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
         }
       }
     });
-    on<DeleteAccount>((event, emit) async {
-      _accountRepository.delete(event.id);
+    on<DeleteAccount>((event, emit) {
+      _accountRepository.deleteAccountTree(event.account);
+
       if (state is AccountLoaded) {
-        emit(AccountLoaded(
-            accounts: await _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
       }
       if (state is AccountSelected) {
-        final acc = await _accountRepository
+        final acc = _accountRepository
             .getAccount((state as AccountSelected).account!.id);
         if (acc != null) {
           emit(AccountSelected(account: acc));
