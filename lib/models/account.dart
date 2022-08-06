@@ -31,22 +31,6 @@ class Account extends Equatable {
 
   get createdAt => _createdAt;
 
-  getTreeName() {
-    if (parentAccount.target != null) {
-      return parentAccount.target?.getTreeName() + ':' + name;
-    } else {
-      return name;
-    }
-  }
-
-  getTotalBalance() {
-    double total = balance;
-    for (var subAccount in subAccounts) {
-      total += subAccount.getTotalBalance();
-    }
-    return total;
-  }
-
   @override
   List<Object?> get props => [
         id,

@@ -63,4 +63,20 @@ class AccountRepository {
     }
     return list;
   }
+
+  getTreeName(Account account) {
+    if (account.parentAccount.target != null) {
+      return getTreeName(account.parentAccount.target!) + ':' + account.name;
+    } else {
+      return account.name;
+    }
+  }
+
+  getTotalBalance(Account account) {
+    double total = account.balance;
+    for (var subAccount in account.subAccounts) {
+      total += getTotalBalance(subAccount);
+    }
+    return total;
+  }
 }

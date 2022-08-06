@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:open_budget/objectbox.dart';
+import 'package:open_budget/repository/transaction_repository.dart';
 
 import '../../models/transactions.dart';
 
@@ -8,16 +9,18 @@ part 'transaction_event.dart';
 part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
-  TransactionBloc() : super(TransactionInitial()) {
+  final TransactionRepository _transactionRepository;
+
+  TransactionBloc(this._transactionRepository) : super(TransactionInitial()) {
     on<LoadTransaction>((event, emit) {
       if (state is TransactionInitial) {
-        emit(TransactionLoaded(objectBox.store.box<Transaction>().getAll()));
+        emit(TransactionLoaded(_transactionRepository.getTransactions()));
       }
     });
-    on<AddTransaction>((event, emit) {
+    on<SaveTransaction>((event, emit) {
       if (state is TransactionLoaded) {
-        objectBox.store.box<Transaction>().put(event.transaction);
-        emit(TransactionLoaded(objectBox.store.box<Transaction>().getAll()));
+        _transactionRepository.save(event.transaction);
+        emit(TransactionLoaded(_transactionRepository.getTransactions()));
       }
     });
   }

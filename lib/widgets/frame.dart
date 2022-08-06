@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
 import 'package:open_budget/widgets/account/account_overview.dart';
-import 'package:open_budget/widgets/transaction/edit_transaction_page.dart';
+import 'package:open_budget/widgets/transaction/edit_transaction.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
 
 import '../bloc/transaction/transaction_bloc.dart';
@@ -25,7 +25,16 @@ class Frame extends StatelessWidget {
             body: Builder(builder: ((context) {
               switch (state.page) {
                 case NavigationPage.home:
-                  return TransactionList();
+                  return BlocBuilder<TransactionBloc, TransactionState>(
+                    builder: (context, state) {
+                      if (state is TransactionLoaded) {
+                        return TransactionList(
+                            transactions: state.transactions);
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
                 case NavigationPage.accounts:
                   return const AccountOverview();
                 case NavigationPage.reports:

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import "package:intl/intl.dart";
+import 'package:open_budget/repository/account_repository.dart';
+import 'package:open_budget/widgets/transaction/transaction_list.dart';
 import '../../models/account.dart';
 import 'edit_account.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
@@ -24,9 +27,7 @@ class _AccountOverviewState extends State<AccountOverview> {
           if (state is AccountLoaded) {
             _selectedAccount = null;
             return Scaffold(
-                body: AccountList(
-                  accounts: state.accounts,
-                ),
+                body: AccountList(accounts: state.accounts),
                 floatingActionButton:
                     AddAccountButton(account: _selectedAccount));
           } else if (state is AccountSelected) {
@@ -35,9 +36,7 @@ class _AccountOverviewState extends State<AccountOverview> {
                 appBar: AppBar(
                   title: const Text("Accounts"),
                 ),
-                body: AccountList(
-                  accounts: state.account!.subAccounts,
-                ),
+                body: AccountTabs(account: state.account!),
                 floatingActionButton:
                     AddAccountButton(account: _selectedAccount));
           } else {
@@ -55,6 +54,49 @@ class _AccountOverviewState extends State<AccountOverview> {
       }
       return true;
     });
+  }
+}
+
+class AccountTabs extends StatelessWidget {
+  final Account account;
+
+  const AccountTabs({
+    Key? key,
+    required this.account,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 3,
+        child: Column(
+          children: [
+            Container(
+              constraints: BoxConstraints(maxHeight: 150.0),
+              child: Material(
+                color: Colors.blue,
+                child: TabBar(
+                  tabs: [
+                    Tab(icon: Icon(Icons.account_balance_wallet)),
+                    Tab(icon: Icon(Icons.attach_money)),
+                    Tab(icon: Icon(Icons.pie_chart)),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  AccountList(
+                    accounts: account.subAccounts,
+                  ),
+                  TransactionList(transactions: account.transactions),
+                  Icon(Icons.directions_bike),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -126,7 +168,9 @@ class AccountTile extends StatelessWidget {
                                   TextSpan(
                                       text: NumberFormat.simpleCurrency(
                                               name: account.currency)
-                                          .format(account.getTotalBalance()),
+                                          .format(context
+                                              .read<AccountRepository>()
+                                              .getTotalBalance(account)),
                                       style: TextStyle(
                                           color: Colors.greenAccent[700])),
                                   TextSpan(

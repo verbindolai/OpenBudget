@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/transaction/transaction_bloc.dart';
 import 'package:open_budget/models/account.dart';
+import 'package:open_budget/repository/account_repository.dart';
 import '../../input_calculator/input_calculator.dart';
 import '../../models/transactions.dart';
 
@@ -105,7 +106,9 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
                     items: state.accounts.map((Account account) {
                       return DropdownMenuItem<int>(
                         value: account.id,
-                        child: Text(account.getTreeName()),
+                        child: Text(context
+                            .read<AccountRepository>()
+                            .getTreeName(account)),
                       );
                     }).toList(),
                   ));
@@ -131,11 +134,11 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
                         widget.transaction.account.target =
                             state.selectedAccount;
                         formKey.currentState!.save();
-
                         context
                             .read<TransactionBloc>()
-                            .add(AddTransaction(widget.transaction));
+                            .add(SaveTransaction(widget.transaction));
                       }
+                      Navigator.pop(context);
                     },
                     child: const Text("Save"));
               } else {

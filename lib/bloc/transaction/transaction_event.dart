@@ -5,8 +5,8 @@ abstract class TransactionEvent {}
 
 class LoadTransaction extends TransactionEvent {}
 
-class AddTransaction extends TransactionEvent {
+class SaveTransaction extends TransactionEvent {
   final Transaction transaction;
 
-  AddTransaction(this.transaction);
+  SaveTransaction(this.transaction);
 }

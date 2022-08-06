@@ -16,7 +16,9 @@ class AccountSelectionBloc
     on<LoadAccountSelection>((event, emit) {
       final accounts = _accountRepository.getAccounts();
       accounts.sort((a, b) {
-        return a.getTreeName().compareTo(b.getTreeName());
+        return _accountRepository
+            .getTreeName(a)
+            .compareTo(_accountRepository.getTreeName(b));
       });
 
       emit(AccountSelectionLoaded(
@@ -27,7 +29,9 @@ class AccountSelectionBloc
       if (state is AccountSelectionLoaded) {
         final List<Account> accounts = _accountRepository.getAccounts();
         accounts.sort((a, b) {
-          return a.getTreeName().compareTo(b.getTreeName());
+          return _accountRepository
+              .getTreeName(a)
+              .compareTo(_accountRepository.getTreeName(b));
         });
         final Account? account =
             accounts.firstWhere((element) => element.id == event.accountId);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
+import 'package:open_budget/repository/transaction_repository.dart';
 import 'package:open_budget/widgets/frame.dart';
 import 'bloc/account/account_overview_bloc.dart';
 import 'bloc/transaction/transaction_bloc.dart';
@@ -31,13 +32,17 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AccountRepository>(
-          create: (context) => AccountRepository(objectBox),
+            create: (context) => AccountRepository(objectBox)),
+        RepositoryProvider<TransactionRepository>(
+          create: (context) => TransactionRepository(objectBox),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => TransactionBloc()..add(LoadTransaction()),
+            create: (context) =>
+                TransactionBloc(context.read<TransactionRepository>())
+                  ..add(LoadTransaction()),
           ),
           BlocProvider(
             create: (context) =>
