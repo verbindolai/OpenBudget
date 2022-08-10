@@ -20,44 +20,57 @@ class AccountOverview extends StatefulWidget {
 class _AccountOverviewState extends State<AccountOverview> {
   Account? _selectedAccount;
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(child: Scaffold(
-      body: BlocBuilder<AccountOverviewBloc, AccountOverviewState>(
-        builder: (context, state) {
-          if (state is AccountLoaded) {
-            _selectedAccount = null;
-            return Scaffold(
-                body: AccountList(accounts: state.accounts),
-                floatingActionButton:
-                    AddAccountButton(account: _selectedAccount));
-          } else if (state is AccountSelected) {
-            _selectedAccount = state.account;
-            context
-                .read<TransactionListBloc>()
-                .add(DisplayAccountTransactions(state.account!.id));
-            return Scaffold(
-                appBar: AppBar(
-                  title: const Text("Accounts"),
-                ),
-                body: AccountTabs(account: state.account!),
-                floatingActionButton:
-                    AddAccountButton(account: _selectedAccount));
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    ), onWillPop: () async {
+  //Returns a callback function
+  popAccountSelection(BuildContext context, Account? account) {
+    return () async {
       final bloc = context.read<AccountOverviewBloc>();
       var acc = _selectedAccount;
       if (acc != null) {
         bloc.add(SelectAccount(account: acc.parentAccount.target));
       }
       return true;
-    });
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: popAccountSelection(context, _selectedAccount),
+        child: Scaffold(
+          body: BlocBuilder<AccountOverviewBloc, AccountOverviewState>(
+            builder: (context, state) {
+              if (state is AccountLoaded) {
+                _selectedAccount = null;
+                return buildAllAccountsView(state.accounts);
+              } else if (state is AccountSelected) {
+                _selectedAccount = state.account;
+                context
+                    .read<TransactionListBloc>()
+                    .add(DisplayAccountTransactions(_selectedAccount!.id));
+                return buildSelectedAccountView();
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ));
+  }
+
+  Widget buildAllAccountsView(List<Account> accounts) {
+    return Scaffold(
+        body: AccountList(accounts: accounts),
+        floatingActionButton: AddAccountButton(account: _selectedAccount));
+  }
+
+  Widget buildSelectedAccountView() {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Accounts"),
+        ),
+        body: AccountTabs(account: _selectedAccount!),
+        floatingActionButton: AddAccountButton(account: _selectedAccount));
   }
 }
 
@@ -147,121 +160,124 @@ class AccountTile extends StatelessWidget {
     return SizedBox(
         height: 80,
         child: Row(children: [
-          Container(
-            height: double.infinity,
-            width: 7,
-            color: Color(account.color),
-          ),
+          buildAccountColorBox(),
           Expanded(
               child: Container(
                   padding: const EdgeInsets.all(10),
                   child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Icon(Icons.account_balance_wallet),
-                      Expanded(
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(account.name),
-                                RichText(
-                                    text: TextSpan(children: <TextSpan>[
-                                  TextSpan(
-                                      text: NumberFormat.simpleCurrency(
-                                              name: account.currency)
-                                          .format(context
-                                              .read<AccountRepository>()
-                                              .getTotalBalance(account)),
-                                      style: TextStyle(
-                                          color: Colors.greenAccent[700])),
-                                  TextSpan(
-                                      text: account.subAccounts.isNotEmpty
-                                          ? ', ${account.subAccounts.length} sub account${account.subAccounts.length > 1 ? 's' : ''}'
-                                          : '',
-                                      style:
-                                          const TextStyle(color: Colors.grey)),
-                                ])),
-                              ],
-                            )),
-                      ),
-                      Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: Icon(
-                                account.favorite
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                color: Colors.grey),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    builder: (context) => Wrap(children: [
-                                          Column(
-                                            children: [
-                                              Card(
-                                                  child: ListTile(
-                                                tileColor: Colors.grey[300],
-                                                title: Center(
-                                                    child: Icon(
-                                                  Icons.edit,
-                                                  color: Colors.grey[900],
-                                                )),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EditAccount(
-                                                                  account:
-                                                                      account)));
-                                                },
-                                              )),
-                                              Card(
-                                                child: ListTile(
-                                                  tileColor: Colors.red[600],
-                                                  title: const Center(
-                                                    child: Icon(Icons.delete,
-                                                        color: Colors.white),
-                                                  ),
-                                                  onTap: () async {
-                                                    if (await confirm(
-                                                      context,
-                                                      title:
-                                                          const Text('Confirm'),
-                                                      content: const Text(
-                                                          'Would you like to delete this Account?'),
-                                                      textOK: const Text('Yes'),
-                                                      textCancel:
-                                                          const Text('No'),
-                                                    )) {
-                                                      final bloc = context.read<
-                                                          AccountOverviewBloc>();
-                                                      bloc.add(DeleteAccount(
-                                                          account: account));
-                                                      Navigator.pop(context);
-                                                    }
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          )
-                                        ]));
-                              },
-                              child: const Icon(Icons.more_vert,
-                                  color: Colors.grey))
-                        ],
-                      ),
-                    ],
-                  )))
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Icon(Icons.account_balance_wallet),
+                        buildAccountInformation(context),
+                        buildButtonContainer(context)
+                      ])))
         ]));
+  }
+
+  Widget buildAccountColorBox() {
+    return Container(
+      height: double.infinity,
+      width: 7,
+      decoration: BoxDecoration(
+          color: Color(account.color),
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(10), topLeft: Radius.circular(10))),
+    );
+  }
+
+  Widget buildAccountInformation(BuildContext context) {
+    return Expanded(
+      child: Container(
+          margin: const EdgeInsets.only(left: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(account.name),
+              RichText(
+                  text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                    text: NumberFormat.simpleCurrency(name: account.currency)
+                        .format(context
+                            .read<AccountRepository>()
+                            .getTotalBalance(account)),
+                    style: TextStyle(color: Colors.greenAccent[700])),
+                TextSpan(
+                    text: account.subAccounts.isNotEmpty
+                        ? ', ${account.subAccounts.length} sub account${account.subAccounts.length > 1 ? 's' : ''}'
+                        : '',
+                    style: const TextStyle(color: Colors.grey)),
+              ])),
+            ],
+          )),
+    );
+  }
+
+  Widget buildButtonContainer(BuildContext context) {
+    Widget buildEditButton() {
+      return Card(
+          child: ListTile(
+        tileColor: Colors.grey[300],
+        title: Center(
+            child: Icon(
+          Icons.edit,
+          color: Colors.grey[900],
+        )),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditAccount(account: account)));
+        },
+      ));
+    }
+
+    Widget buildDeleteButton() {
+      return Card(
+        child: ListTile(
+          tileColor: Colors.red[600],
+          title: const Center(
+            child: Icon(Icons.delete, color: Colors.white),
+          ),
+          onTap: () async {
+            if (await confirm(
+              context,
+              title: const Text('Confirm'),
+              content: const Text('Would you like to delete this Account?'),
+              textOK: const Text('Yes'),
+              textCancel: const Text('No'),
+            )) {
+              final bloc = context.read<AccountOverviewBloc>();
+              bloc.add(DeleteAccount(account: account));
+              Navigator.pop(context);
+            }
+          },
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {},
+          child: Icon(account.favorite ? Icons.star : Icons.star_border,
+              color: Colors.grey),
+        ),
+        GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => Wrap(children: [
+                        Column(
+                          children: [buildEditButton(), buildDeleteButton()],
+                        )
+                      ]));
+            },
+            child: const Icon(Icons.more_vert, color: Colors.grey))
+      ],
+    );
   }
 }
 

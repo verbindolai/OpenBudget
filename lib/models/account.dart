@@ -32,6 +32,11 @@ class Account extends Equatable {
   get createdAt => _createdAt;
 
   @override
+  String toString() {
+    return 'Account{id: $id, name: $name, balance: $balance, placeholder: $placeholder, excluded: $excluded, icon: $icon, color: $color, currency: $currency, favorite: $favorite, parentAccount: ${parentAccount.target?.name}, subAccounts: $subAccounts, transactions: $transactions}';
+  }
+
+  @override
   List<Object?> get props => [
         id,
         name,

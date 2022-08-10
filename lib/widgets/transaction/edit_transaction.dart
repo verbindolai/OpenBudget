@@ -43,7 +43,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
   }
 
   Widget buildTransactionDescription() => Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: TextFormField(
         decoration: const InputDecoration(
           labelText: 'Description',
@@ -58,7 +58,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
         },
       ));
   Widget buildTransactionAmount() => Container(
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: CalculatorTextFormField(
         initialValue: widget.transaction.amount,
         validator: (value) {
@@ -81,7 +81,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
 
   Widget buildDropDown(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
         child: BlocBuilder<AccountSelectionBloc, AccountSelectionState>(
           builder: (context, state) {
             if (state is AccountSelectionLoaded) {
@@ -92,6 +92,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
                       if (value == null) {
                         return 'Please select an account';
                       }
+                      return null;
                     },
                     decoration: const InputDecoration(
                       labelText: 'Account',

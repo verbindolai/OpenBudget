@@ -28,9 +28,9 @@ class _TransactionListState extends State<TransactionList> {
               ..insert(
                   0,
                   ListTile(
-                    title: Text("Add a new transaction",
+                    title: const Text("Add a new transaction",
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: Icon(Icons.add),
+                    trailing: const Icon(Icons.add),
                     onTap: () {
                       context
                           .read<AccountSelectionBloc>()

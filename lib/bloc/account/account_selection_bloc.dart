@@ -33,12 +33,10 @@ class AccountSelectionBloc
               .getTreeName(a)
               .compareTo(_accountRepository.getTreeName(b));
         });
-        final Account? account =
+        final Account account =
             accounts.firstWhere((element) => element.id == event.accountId);
-        if (account != null) {
-          emit(AccountSelectionLoaded(
-              accounts: accounts, selectedAccount: account));
-        }
+        emit(AccountSelectionLoaded(
+            accounts: accounts, selectedAccount: account));
       }
     });
   }
