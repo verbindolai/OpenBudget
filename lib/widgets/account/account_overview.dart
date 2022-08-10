@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import "package:intl/intl.dart";
+import 'package:open_budget/bloc/transaction/transaction_list_bloc.dart';
 import 'package:open_budget/repository/account_repository.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
 import '../../models/account.dart';
@@ -32,6 +33,9 @@ class _AccountOverviewState extends State<AccountOverview> {
                     AddAccountButton(account: _selectedAccount));
           } else if (state is AccountSelected) {
             _selectedAccount = state.account;
+            context
+                .read<TransactionListBloc>()
+                .add(DisplayAccountTransactions(state.account!.id));
             return Scaffold(
                 appBar: AppBar(
                   title: const Text("Accounts"),
@@ -72,8 +76,8 @@ class AccountTabs extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              constraints: BoxConstraints(maxHeight: 150.0),
-              child: Material(
+              constraints: const BoxConstraints(maxHeight: 150.0),
+              child: const Material(
                 color: Colors.blue,
                 child: TabBar(
                   tabs: [
@@ -90,8 +94,8 @@ class AccountTabs extends StatelessWidget {
                   AccountList(
                     accounts: account.subAccounts,
                   ),
-                  TransactionList(transactions: account.transactions),
-                  Icon(Icons.directions_bike),
+                  const TransactionList(),
+                  const Icon(Icons.directions_bike),
                 ],
               ),
             ),

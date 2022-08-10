@@ -19,7 +19,7 @@ class Transaction extends Equatable {
 
   @override
   String toString() {
-    return 'Transaction{id: $id, amount: $amount, date: $date, description: $description, category: ${category.toString()}';
+    return 'Transaction{id: $id, amount: $amount, date: $date, description: $description, category: ${category.toString()}, account: ${account.target?.name}}';
   }
 
   @override

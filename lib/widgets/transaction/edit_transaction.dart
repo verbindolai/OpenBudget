@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
-import 'package:open_budget/bloc/transaction/transaction_bloc.dart';
+import 'package:open_budget/bloc/transaction/transaction_list_bloc.dart';
 import 'package:open_budget/models/account.dart';
 import 'package:open_budget/repository/account_repository.dart';
 import '../../input_calculator/input_calculator.dart';
@@ -131,13 +132,12 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
                     ),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
+                        final bloc = context.read<TransactionListBloc>();
                         widget.transaction.account.target =
                             state.selectedAccount;
-                        formKey.currentState!.save();
-                        context
-                            .read<TransactionBloc>()
-                            .add(SaveTransaction(widget.transaction));
+                        bloc.add(SaveTransaction(widget.transaction));
                       }
+
                       Navigator.pop(context);
                     },
                     child: const Text("Save"));

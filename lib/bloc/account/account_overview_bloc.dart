@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:open_budget/models/transactions.dart';
+import 'package:open_budget/repository/transaction_repository.dart';
 
 import '../../models/account.dart';
 import '../../repository/account_repository.dart';

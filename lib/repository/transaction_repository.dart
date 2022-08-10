@@ -14,7 +14,19 @@ class TransactionRepository {
     return objectBox.store.box<Transaction>().getAll();
   }
 
+  List<Transaction> getTransactionsForAccount(int accountId) {
+    return objectBox.store
+        .box<Transaction>()
+        .getAll()
+        .where((t) => t.account.target?.id == accountId)
+        .toList();
+  }
+
   save(Transaction transaction) {
     return objectBox.store.box<Transaction>().put(transaction);
+  }
+
+  deleteAll() {
+    return objectBox.store.box<Transaction>().removeAll();
   }
 }

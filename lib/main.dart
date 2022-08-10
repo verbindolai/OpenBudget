@@ -4,7 +4,7 @@ import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
 import 'package:open_budget/repository/transaction_repository.dart';
 import 'package:open_budget/widgets/frame.dart';
 import 'bloc/account/account_overview_bloc.dart';
-import 'bloc/transaction/transaction_bloc.dart';
+import 'bloc/transaction/transaction_list_bloc.dart';
 import 'objectbox.dart';
 import 'objectbox.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,8 +41,8 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) =>
-                TransactionBloc(context.read<TransactionRepository>())
-                  ..add(LoadTransaction()),
+                TransactionListBloc(context.read<TransactionRepository>())
+                  ..add(const LoadTransactionList()),
           ),
           BlocProvider(
             create: (context) =>
@@ -58,7 +58,10 @@ class App extends StatelessWidget {
                   AccountSelectionBloc(context.read<AccountRepository>())
                     ..add(LoadAccountSelection())),
         ],
-        child: const MaterialApp(home: Frame()),
+        child: const MaterialApp(
+          home: Frame(),
+          title: "OpenBudget",
+        ),
       ),
     );
   }

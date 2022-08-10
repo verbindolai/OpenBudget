@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
 import 'package:open_budget/widgets/account/account_overview.dart';
 import 'package:open_budget/widgets/transaction/edit_transaction.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
 
-import '../bloc/transaction/transaction_bloc.dart';
+import '../bloc/transaction/transaction_list_bloc.dart';
 import '../models/transactions.dart';
 
 class Frame extends StatelessWidget {
@@ -25,16 +26,7 @@ class Frame extends StatelessWidget {
             body: Builder(builder: ((context) {
               switch (state.page) {
                 case NavigationPage.home:
-                  return BlocBuilder<TransactionBloc, TransactionState>(
-                    builder: (context, state) {
-                      if (state is TransactionLoaded) {
-                        return TransactionList(
-                            transactions: state.transactions);
-                      } else {
-                        return Container();
-                      }
-                    },
-                  );
+                  return const TransactionList();
                 case NavigationPage.accounts:
                   return const AccountOverview();
                 case NavigationPage.reports:
@@ -84,7 +76,6 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomAppBar(
       //bottom navigation bar on scaffold
-      color: Colors.blue,
       shape: const CircularNotchedRectangle(), //shape of notch
       notchMargin: 5, //notche margin between floating button and bottom appbar
       child: Row(
@@ -100,6 +91,8 @@ class BottomNavBar extends StatelessWidget {
             onPressed: () {
               BlocProvider.of<NavigationBloc>(context).add(
                   const SelectNavigation("Home", page: NavigationPage.home));
+              BlocProvider.of<TransactionListBloc>(context)
+                  .add(DisplayRecentTransactions());
             },
           ),
           IconButton(
