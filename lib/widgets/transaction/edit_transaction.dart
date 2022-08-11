@@ -26,7 +26,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add'),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFF000814),
       ),
       body: Form(
           key: formKey,
@@ -127,16 +127,23 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
             builder: (context, state) {
               if (state is AccountSelectionLoaded) {
                 return ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green),
-                    ),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        final bloc = context.read<TransactionListBloc>();
-                        widget.transaction.account.target =
-                            state.selectedAccount;
-                        bloc.add(SaveTransaction(widget.transaction));
+                        if (state.selectedAccount != null) {
+                          final transactionBloc =
+                              context.read<TransactionListBloc>();
+                          final accountBloc =
+                              context.read<AccountOverviewBloc>();
+                          final Account account = state.selectedAccount!;
+
+                          widget.transaction.account.target = account;
+                          transactionBloc
+                              .add(SaveTransaction(widget.transaction));
+
+                          account.balance += widget.transaction.amount;
+
+                          accountBloc.add(SaveAccount(account: account));
+                        }
                       }
 
                       Navigator.pop(context);

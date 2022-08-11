@@ -47,7 +47,7 @@ class _AccountOverviewState extends State<AccountOverview> {
                 context
                     .read<TransactionListBloc>()
                     .add(DisplayAccountTransactions(_selectedAccount!.id));
-                return buildSelectedAccountView();
+                return buildSelectedAccountView(state.balance);
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -64,10 +64,11 @@ class _AccountOverviewState extends State<AccountOverview> {
         floatingActionButton: AddAccountButton(account: _selectedAccount));
   }
 
-  Widget buildSelectedAccountView() {
+  Widget buildSelectedAccountView(double balance) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Accounts"),
+          title: Text(
+              "${_selectedAccount!.name} ${NumberFormat.simpleCurrency(name: _selectedAccount!.currency).format(balance)}"),
         ),
         body: AccountTabs(account: _selectedAccount!),
         floatingActionButton: AddAccountButton(account: _selectedAccount));
@@ -91,8 +92,9 @@ class AccountTabs extends StatelessWidget {
             Container(
               constraints: const BoxConstraints(maxHeight: 150.0),
               child: const Material(
-                color: Colors.blue,
+                color: Color(0xFF000814),
                 child: TabBar(
+                  indicatorColor: Color(0xFFFFC300),
                   tabs: [
                     Tab(icon: Icon(Icons.account_balance_wallet)),
                     Tab(icon: Icon(Icons.attach_money)),
@@ -128,21 +130,28 @@ class AccountList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+        padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 80.0),
         children: accounts
-            .map((account) => Card(
-                    child: InkWell(
-                  onTap: (() {
-                    final bloc = context.read<AccountOverviewBloc>();
-                    bloc.add(SelectAccount(account: account));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AccountOverview()));
-                  }),
-                  child: AccountTile(
-                    account: account,
-                  ),
-                )))
+            .map((account) => Column(children: [
+                  const SizedBox(height: 5.0),
+                  Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: InkWell(
+                        onTap: (() {
+                          final bloc = context.read<AccountOverviewBloc>();
+                          bloc.add(SelectAccount(account: account));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AccountOverview()));
+                        }),
+                        child: AccountTile(
+                          account: account,
+                        ),
+                      ))
+                ]))
             .toList());
   }
 }
@@ -163,6 +172,11 @@ class AccountTile extends StatelessWidget {
           buildAccountColorBox(),
           Expanded(
               child: Container(
+                  decoration: const BoxDecoration(
+                      color: Color(0xFF003566),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0))),
                   padding: const EdgeInsets.all(10),
                   child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -177,12 +191,11 @@ class AccountTile extends StatelessWidget {
 
   Widget buildAccountColorBox() {
     return Container(
-      height: double.infinity,
-      width: 7,
+      width: 12,
       decoration: BoxDecoration(
           color: Color(account.color),
           borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(10), topLeft: Radius.circular(10))),
+              bottomLeft: Radius.circular(4), topLeft: Radius.circular(4))),
     );
   }
 
@@ -267,6 +280,7 @@ class AccountTile extends StatelessWidget {
         GestureDetector(
             onTap: () {
               showModalBottomSheet(
+                  backgroundColor: Color(0xFF000814),
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => Wrap(children: [

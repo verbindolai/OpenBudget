@@ -49,7 +49,6 @@ class _EditAccountState extends State<EditAccount> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Account'),
-        backgroundColor: Colors.green,
       ),
       body: Form(
           key: formKey,
@@ -254,9 +253,6 @@ class _EditAccountState extends State<EditAccount> {
 
   Widget buildSubmit() => Builder(
       builder: (context) => ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-          ),
           onPressed: () {
             if (formKey.currentState!.validate()) {
               formKey.currentState!.save();

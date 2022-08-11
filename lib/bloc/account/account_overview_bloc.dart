@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:open_budget/models/transactions.dart';
 import 'package:open_budget/repository/transaction_repository.dart';
 
@@ -15,19 +16,24 @@ class AccountOverviewBloc
   AccountOverviewBloc(this._accountRepository) : super(AccountInitial()) {
     on<LoadAccount>((event, emit) {
       if (state is AccountInitial || state is AccountSelected) {
-        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(
+            accounts: _accountRepository.getAllMainAccounts(),
+            balance: _accountRepository.getOverallBalance()));
       }
     });
     on<SaveAccount>((event, emit) {
       _accountRepository.save(event.account);
       if (state is AccountLoaded) {
-        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(
+            accounts: _accountRepository.getAllMainAccounts(),
+            balance: _accountRepository.getOverallBalance()));
       }
       if (state is AccountSelected) {
         final acc = _accountRepository
             .getAccount((state as AccountSelected).account!.id);
         if (acc != null) {
-          emit(AccountSelected(account: acc));
+          emit(AccountSelected(
+              account: acc, balance: _accountRepository.getTotalBalance(acc)));
         }
       }
     });
@@ -35,10 +41,13 @@ class AccountOverviewBloc
     on<SelectAccount>((event, emit) {
       if (state is AccountLoaded || state is AccountSelected) {
         if (event.account != null) {
-          emit(AccountSelected(account: event.account));
+          emit(AccountSelected(
+              account: event.account,
+              balance: _accountRepository.getTotalBalance(event.account!)));
         } else {
-          emit(
-              AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
+          emit(AccountLoaded(
+              accounts: _accountRepository.getAllMainAccounts(),
+              balance: _accountRepository.getOverallBalance()));
         }
       }
     });
@@ -46,13 +55,16 @@ class AccountOverviewBloc
       _accountRepository.deleteAccountTree(event.account);
 
       if (state is AccountLoaded) {
-        emit(AccountLoaded(accounts: _accountRepository.getAllMainAccounts()));
+        emit(AccountLoaded(
+            accounts: _accountRepository.getAllMainAccounts(),
+            balance: _accountRepository.getOverallBalance()));
       }
       if (state is AccountSelected) {
         final acc = _accountRepository
             .getAccount((state as AccountSelected).account!.id);
         if (acc != null) {
-          emit(AccountSelected(account: acc));
+          emit(AccountSelected(
+              account: acc, balance: _accountRepository.getTotalBalance(acc)));
         }
       }
     });

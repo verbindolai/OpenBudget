@@ -21,7 +21,6 @@ class TransactionListBloc
     });
     on<SaveTransaction>((event, emit) {
       _transactionRepository.save(event.transaction);
-
       if (state is RecentTransactions) {
         emit(RecentTransactions(_transactionRepository.getTransactions()));
       } else if (state is AccountTransactions) {

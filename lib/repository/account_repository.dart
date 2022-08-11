@@ -42,6 +42,11 @@ class AccountRepository {
         .toList();
   }
 
+  getOverallBalance() {
+    return objectBox.store.box<Account>().getAll().fold<double>(
+        0, (previousValue, element) => previousValue + element.balance);
+  }
+
   // QueryBuilder<Account> builder =
   //     objectBox.store.box<Account>().query();
   // builder.link(Account_.parentAccount,

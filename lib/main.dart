@@ -58,10 +58,17 @@ class App extends StatelessWidget {
                   AccountSelectionBloc(context.read<AccountRepository>())
                     ..add(LoadAccountSelection())),
         ],
-        child: const MaterialApp(
-          home: Frame(),
-          title: "OpenBudget",
-        ),
+        child: MaterialApp(
+            home: const Frame(),
+            title: "OpenBudget",
+            theme: ThemeData.dark().copyWith(
+                bottomAppBarTheme:
+                    const BottomAppBarTheme(color: Color(0xFF000814)),
+                scaffoldBackgroundColor: const Color(0xFF001d3d),
+                floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                    backgroundColor: Color(0xFFffc300)),
+                colorScheme: const ColorScheme.light()
+                    .copyWith(primary: const Color(0xFF000814)))),
       ),
     );
   }

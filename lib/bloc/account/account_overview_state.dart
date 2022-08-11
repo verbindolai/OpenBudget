@@ -11,18 +11,20 @@ class AccountInitial extends AccountOverviewState {}
 
 class AccountLoaded extends AccountOverviewState {
   final List<Account> accounts;
+  final double balance;
 
-  const AccountLoaded({required this.accounts});
+  const AccountLoaded({required this.accounts, required this.balance});
 
   @override
-  List<Object?> get props => [accounts];
+  List<Object?> get props => [accounts, balance];
 }
 
 class AccountSelected extends AccountOverviewState {
   final Account? account;
+  final double balance;
 
-  const AccountSelected({required this.account});
+  const AccountSelected({required this.account, required this.balance});
 
   @override
-  List<Object?> get props => [account];
+  List<Object?> get props => [account, balance];
 }
