@@ -42,7 +42,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 TransactionListBloc(context.read<TransactionRepository>())
-                  ..add(const LoadTransactionList()),
+                  ..add(DisplayRecentTransactions()),
           ),
           BlocProvider(
             create: (context) =>

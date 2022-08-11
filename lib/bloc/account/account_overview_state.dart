@@ -11,7 +11,7 @@ class AccountInitial extends AccountOverviewState {}
 
 class AccountLoaded extends AccountOverviewState {
   final List<Account> accounts;
-  final double balance;
+  final Map<String, double> balance;
 
   const AccountLoaded({required this.accounts, required this.balance});
 

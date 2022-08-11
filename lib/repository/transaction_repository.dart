@@ -1,5 +1,6 @@
 import 'package:open_budget/models/transactions.dart';
 import 'package:open_budget/objectbox.dart';
+import 'package:open_budget/objectbox.g.dart';
 
 class TransactionRepository {
   final ObjectBox objectBox;
@@ -12,6 +13,13 @@ class TransactionRepository {
 
   List<Transaction> getTransactions() {
     return objectBox.store.box<Transaction>().getAll();
+  }
+
+  List<Transaction> getLastTransactionsByDate({int count = 10}) {
+    final qBuilder = objectBox.store.box<Transaction>().query()
+      ..order(Transaction_.date, flags: Order.descending);
+    final query = qBuilder.build()..limit = count;
+    return query.find();
   }
 
   List<Transaction> getTransactionsForAccount(int accountId) {

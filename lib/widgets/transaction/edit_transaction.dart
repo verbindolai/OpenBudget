@@ -137,6 +137,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
                           final Account account = state.selectedAccount!;
 
                           widget.transaction.account.target = account;
+                          widget.transaction.date = DateTime.now();
                           transactionBloc
                               .add(SaveTransaction(widget.transaction));
 

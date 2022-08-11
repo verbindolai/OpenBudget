@@ -22,7 +22,8 @@ class TransactionListBloc
     on<SaveTransaction>((event, emit) {
       _transactionRepository.save(event.transaction);
       if (state is RecentTransactions) {
-        emit(RecentTransactions(_transactionRepository.getTransactions()));
+        emit(RecentTransactions(
+            _transactionRepository.getLastTransactionsByDate(count: 3)));
       } else if (state is AccountTransactions) {
         int id = (state as AccountTransactions).accountId;
         emit(AccountTransactions(
@@ -34,7 +35,8 @@ class TransactionListBloc
           _transactionRepository.getTransactionsForAccount(event.accountId)));
     });
     on<DisplayRecentTransactions>((event, emit) {
-      emit(RecentTransactions(_transactionRepository.getTransactions()));
+      emit(RecentTransactions(
+          _transactionRepository.getLastTransactionsByDate(count: 3)));
     });
   }
 }

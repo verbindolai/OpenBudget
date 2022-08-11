@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/models/transactions.dart';
 import 'package:open_budget/widgets/transaction/edit_transaction.dart';
@@ -20,9 +21,18 @@ class _TransactionListState extends State<TransactionList> {
         return ListView(
             children: state.transactions.map((transaction) {
           return ListTile(
-            title: Text("Transaction ${transaction.id}"),
-            subtitle: Text(transaction.amount.toString()),
-            trailing: Text(transaction.account.target!.name),
+            title: Text(transaction.id.toString()),
+            subtitle: Text(
+              DateFormat.yMMMd().format(transaction.date),
+            ),
+            trailing: Text(
+                NumberFormat.simpleCurrency(
+                        name: transaction.account.target?.currency)
+                    .format(transaction.amount),
+                style: TextStyle(
+                    color: transaction.amount > 0
+                        ? Colors.greenAccent[700]
+                        : Colors.redAccent[400])),
           );
         }).toList()
               ..insert(

@@ -42,6 +42,19 @@ class AccountRepository {
         .toList();
   }
 
+  Map<String, double> getTotalByCurrency() {
+    Map<String, double> totalByCurrency = {};
+    getAccounts().forEach((account) {
+      if (totalByCurrency.containsKey(account.currency)) {
+        totalByCurrency[account.currency] =
+            totalByCurrency[account.currency]! + account.balance;
+      } else {
+        totalByCurrency[account.currency] = account.balance;
+      }
+    });
+    return totalByCurrency;
+  }
+
   getOverallBalance() {
     return objectBox.store.box<Account>().getAll().fold<double>(
         0, (previousValue, element) => previousValue + element.balance);

@@ -1,9 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:open_budget/models/transactions.dart';
-import 'package:open_budget/repository/transaction_repository.dart';
-
 import '../../models/account.dart';
 import '../../repository/account_repository.dart';
 part 'account_overview_event.dart';
@@ -18,7 +14,7 @@ class AccountOverviewBloc
       if (state is AccountInitial || state is AccountSelected) {
         emit(AccountLoaded(
             accounts: _accountRepository.getAllMainAccounts(),
-            balance: _accountRepository.getOverallBalance()));
+            balance: _accountRepository.getTotalByCurrency()));
       }
     });
     on<SaveAccount>((event, emit) {
@@ -26,7 +22,7 @@ class AccountOverviewBloc
       if (state is AccountLoaded) {
         emit(AccountLoaded(
             accounts: _accountRepository.getAllMainAccounts(),
-            balance: _accountRepository.getOverallBalance()));
+            balance: _accountRepository.getTotalByCurrency()));
       }
       if (state is AccountSelected) {
         final acc = _accountRepository
@@ -47,7 +43,7 @@ class AccountOverviewBloc
         } else {
           emit(AccountLoaded(
               accounts: _accountRepository.getAllMainAccounts(),
-              balance: _accountRepository.getOverallBalance()));
+              balance: _accountRepository.getTotalByCurrency()));
         }
       }
     });
@@ -57,7 +53,7 @@ class AccountOverviewBloc
       if (state is AccountLoaded) {
         emit(AccountLoaded(
             accounts: _accountRepository.getAllMainAccounts(),
-            balance: _accountRepository.getOverallBalance()));
+            balance: _accountRepository.getTotalByCurrency()));
       }
       if (state is AccountSelected) {
         final acc = _accountRepository
