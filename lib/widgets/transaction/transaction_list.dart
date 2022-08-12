@@ -18,42 +18,58 @@ class _TransactionListState extends State<TransactionList> {
   Widget build(BuildContext context) {
     return BlocBuilder<TransactionListBloc, TransactionListState>(
       builder: (context, state) {
-        return ListView(
-            children: state.transactions.map((transaction) {
-          return ListTile(
-            title: Text(transaction.id.toString()),
-            subtitle: Text(
-              DateFormat.yMMMd().format(transaction.date),
-            ),
-            trailing: Text(
+        List<ListTile> transactions = state.transactions.map(
+          (transaction) {
+            return ListTile(
+              title: Text(transaction.id.toString()),
+              subtitle: Text(
+                DateFormat.yMMMd().format(transaction.date),
+              ),
+              trailing: Text(
                 NumberFormat.simpleCurrency(
                         name: transaction.account.target?.currency)
                     .format(transaction.amount),
                 style: TextStyle(
                     color: transaction.amount > 0
                         ? Colors.greenAccent[700]
-                        : Colors.redAccent[400])),
-          );
-        }).toList()
-              ..insert(
-                  0,
-                  ListTile(
-                    title: const Text("Add a new transaction",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: const Icon(Icons.add),
-                    onTap: () {
-                      context
-                          .read<AccountSelectionBloc>()
-                          .add(LoadAccountSelection());
+                        : Colors.redAccent[400]),
+              ),
+            );
+          },
+        ).toList();
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditTransactionPage(
-                                    transaction: Transaction(0, DateTime.now()),
-                                  )));
-                    },
-                  )));
+        if (state is AccountTransactions) {
+          transactions.insert(
+            0,
+            ListTile(
+              title: const Text("Add a new transaction",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              trailing: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onTap: () {
+                context
+                    .read<AccountSelectionBloc>()
+                    .add(LoadAccountSelection());
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditTransactionPage(
+                      transaction: Transaction(0, DateTime.now()),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        return ListView(
+          shrinkWrap: true,
+          children: transactions,
+        );
       },
     );
   }

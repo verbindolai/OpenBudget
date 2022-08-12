@@ -22,12 +22,14 @@ class TransactionRepository {
     return query.find();
   }
 
+  //TODO: order query
   List<Transaction> getTransactionsForAccount(int accountId) {
     return objectBox.store
         .box<Transaction>()
         .getAll()
         .where((t) => t.account.target?.id == accountId)
-        .toList();
+        .toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
   }
 
   save(Transaction transaction) {

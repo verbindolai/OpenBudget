@@ -49,14 +49,11 @@ class _HomeState extends State<Home> {
                     onTap: () {},
                   ),
                   const SizedBox(height: 25),
-                  SizedBox(
-                    height: 300,
-                    child: Card(
-                      color: const Color(0xFF003566),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: const TransactionList(),
-                    ),
+                  Card(
+                    color: const Color(0xFF003566),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: const TransactionList(),
                   ),
                   EditCategory()
                 ],

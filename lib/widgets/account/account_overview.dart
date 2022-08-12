@@ -67,8 +67,28 @@ class _AccountOverviewState extends State<AccountOverview> {
   Widget buildSelectedAccountView(double balance) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-              "${_selectedAccount!.name} ${NumberFormat.simpleCurrency(name: _selectedAccount!.currency).format(balance)}"),
+          title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: "${_selectedAccount!.name}, ",
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                TextSpan(
+                    text: NumberFormat.simpleCurrency(
+                            name: _selectedAccount!.currency)
+                        .format(context
+                            .read<AccountRepository>()
+                            .getTotalBalance(_selectedAccount!)),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.greenAccent[700])),
+              ],
+            ),
+          ),
         ),
         body: AccountTabs(account: _selectedAccount!),
         floatingActionButton: AddAccountButton(account: _selectedAccount));
@@ -109,7 +129,14 @@ class AccountTabs extends StatelessWidget {
                   AccountList(
                     accounts: account.subAccounts,
                   ),
-                  const TransactionList(),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Card(
+                        color: const Color(0xFF003566),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: const TransactionList()),
+                  ),
                   const Icon(Icons.directions_bike),
                 ],
               ),
@@ -167,7 +194,7 @@ class AccountTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 80,
+        height: 100,
         child: Row(children: [
           buildAccountColorBox(),
           Expanded(
@@ -206,15 +233,20 @@ class AccountTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(account.name),
+              Text(
+                account.name,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
               RichText(
                   text: TextSpan(children: <TextSpan>[
                 TextSpan(
-                    text: NumberFormat.simpleCurrency(name: account.currency)
-                        .format(context
-                            .read<AccountRepository>()
-                            .getTotalBalance(account)),
-                    style: TextStyle(color: Colors.greenAccent[700])),
+                  text: NumberFormat.simpleCurrency(name: account.currency)
+                      .format(context
+                          .read<AccountRepository>()
+                          .getTotalBalance(account)),
+                  style: TextStyle(color: Colors.greenAccent[700]),
+                ),
                 TextSpan(
                     text: account.subAccounts.isNotEmpty
                         ? ', ${account.subAccounts.length} sub account${account.subAccounts.length > 1 ? 's' : ''}'
@@ -280,7 +312,7 @@ class AccountTile extends StatelessWidget {
         GestureDetector(
             onTap: () {
               showModalBottomSheet(
-                  backgroundColor: Color(0xFF000814),
+                  backgroundColor: const Color(0xFF000814),
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => Wrap(children: [
