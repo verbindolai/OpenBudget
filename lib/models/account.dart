@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:open_budget/models/transactions.dart';
 
 @Entity()
 class Account extends Equatable {
@@ -13,32 +14,26 @@ class Account extends Equatable {
 
   bool placeholder = false;
   bool excluded = false;
-
   String icon = "";
+  int color = 0xFF000000;
+  String currency = "EUR";
+  bool favorite = false;
 
   final parentAccount = ToOne<Account>();
 
   @Backlink('parentAccount')
   final subAccounts = ToMany<Account>();
 
-  Account(this.name, [this.balance = 0.0]);
+  @Backlink('account')
+  final transactions = ToMany<Transaction>();
+
+  Account([this.name = "", this.balance = 0.0, this.placeholder = false]);
 
   get createdAt => _createdAt;
 
-  getTreeName() {
-    if (parentAccount.target != null) {
-      return parentAccount.target?.getTreeName() + ':' + name;
-    } else {
-      return name;
-    }
-  }
-
-  getTotalBalance() {
-    double total = balance;
-    for (var subAccount in subAccounts) {
-      total += subAccount.getTotalBalance();
-    }
-    return total;
+  @override
+  String toString() {
+    return 'Account{id: $id, name: $name, balance: $balance, placeholder: $placeholder, excluded: $excluded, icon: $icon, color: $color, currency: $currency, favorite: $favorite, parentAccount: ${parentAccount.target?.name}, subAccounts: $subAccounts, transactions: $transactions}';
   }
 
   @override
@@ -49,7 +44,11 @@ class Account extends Equatable {
         placeholder,
         excluded,
         icon,
+        color,
+        currency,
         subAccounts,
-        parentAccount
+        parentAccount,
+        favorite,
+        createdAt,
       ];
 }

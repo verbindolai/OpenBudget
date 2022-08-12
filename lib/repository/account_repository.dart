@@ -1,5 +1,5 @@
 import 'package:open_budget/objectbox.dart';
-import 'package:open_budget/objectbox.g.dart';
+import 'package:stack/stack.dart';
 
 import '../models/account.dart';
 
@@ -8,27 +8,30 @@ class AccountRepository {
 
   AccountRepository(this.objectBox);
 
-  Future<Account?> getAccount(int id) async {
+  getAccount(int id) {
     return objectBox.store.box<Account>().get(id);
   }
 
-  Future<List<Account>> getAccounts() async {
+  List<Account> getAccounts() {
     return objectBox.store.box<Account>().getAll();
   }
 
-  Future<int> createAccount(Account account) async {
+  save(Account account) {
     return objectBox.store.box<Account>().put(account);
   }
 
-  Future<void> updateAccount(Account account) async {
-    objectBox.store.box<Account>().put(account);
+  delete(int accountId) {
+    objectBox.store.box<Account>().remove(accountId);
   }
 
-  Future<void> deleteAccount(Account account) async {
-    objectBox.store.box<Account>().remove(account.id);
+  int deleteAccountTree(Account account) {
+    List<Account> accounts = accountTreeToListIterative(account);
+    return objectBox.store
+        .box<Account>()
+        .removeMany(accounts.map((a) => a.id).toList());
   }
 
-  Future<List<Account>> getAllMainAccounts() async {
+  getAllMainAccounts() {
     // QueryBuilder<Account> builder = objectBox.store.box<Account>().query();
     // builder.link(Account_.parentAccount, Account_.parentAccount.isNull());
     // return builder.build().find();
@@ -39,6 +42,24 @@ class AccountRepository {
         .toList();
   }
 
+  Map<String, double> getTotalByCurrency() {
+    Map<String, double> totalByCurrency = {};
+    getAccounts().forEach((account) {
+      if (totalByCurrency.containsKey(account.currency)) {
+        totalByCurrency[account.currency] =
+            totalByCurrency[account.currency]! + account.balance;
+      } else {
+        totalByCurrency[account.currency] = account.balance;
+      }
+    });
+    return totalByCurrency;
+  }
+
+  getOverallBalance() {
+    return objectBox.store.box<Account>().getAll().fold<double>(
+        0, (previousValue, element) => previousValue + element.balance);
+  }
+
   // QueryBuilder<Account> builder =
   //     objectBox.store.box<Account>().query();
   // builder.link(Account_.parentAccount,
@@ -47,4 +68,33 @@ class AccountRepository {
   //   print(subAccount.name);
   // });
 
+  accountTreeToListIterative(Account account) {
+    final Stack<Account> stack = Stack<Account>();
+    stack.push(account);
+    final List<Account> list = [];
+    while (stack.isNotEmpty) {
+      final Account current = stack.pop();
+      list.add(current);
+      for (final subAccount in current.subAccounts) {
+        stack.push(subAccount);
+      }
+    }
+    return list;
+  }
+
+  getTreeName(Account account) {
+    if (account.parentAccount.target != null) {
+      return getTreeName(account.parentAccount.target!) + ':' + account.name;
+    } else {
+      return account.name;
+    }
+  }
+
+  getTotalBalance(Account account) {
+    double total = account.balance;
+    for (var subAccount in account.subAccounts) {
+      total += getTotalBalance(subAccount);
+    }
+    return total;
+  }
 }

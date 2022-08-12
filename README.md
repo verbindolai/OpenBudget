@@ -1,16 +1,11 @@
-# open_budget
+<h1 align="center"> OpenBudget</h1>
+<p align="center">
+    <img src="docs/openbudget_logo.svg" width=300> 
 
-A new Flutter project.
+<h2  align="center">An open source, local storage only, budgeting app with sub accounts and data visualization</h2>
 
-## Getting Started
+</p>
 
-This project is a starting point for a Flutter application.
+### Details
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+OpenBudget is a budgeting app that is designed to be used on a local machine written in Dart/Flutter.
