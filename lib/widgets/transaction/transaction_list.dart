@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/models/transactions.dart';
+import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
 import 'package:open_budget/widgets/transaction/edit_transaction.dart';
 import '../../bloc/transaction/transaction_list_bloc.dart';
 
@@ -20,8 +21,16 @@ class _TransactionListState extends State<TransactionList> {
       builder: (context, state) {
         List<ListTile> transactions = state.transactions.map(
           (transaction) {
+            IconWithColor icon =
+                iconMap[transaction.category.target?.icon ?? "placeholder"]!;
+
             return ListTile(
-              title: Text(transaction.id.toString()),
+              leading: CircleAvatar(
+                  backgroundColor: icon.backgroundColor,
+                  child: Icon(icon.iconData, color: icon.iconColor)),
+              title: Text(
+                transaction.category.target?.name ?? "No Category",
+              ),
               subtitle: Text(
                 DateFormat.yMMMd().format(transaction.date),
               ),
@@ -30,6 +39,7 @@ class _TransactionListState extends State<TransactionList> {
                         name: transaction.account.target?.currency)
                     .format(transaction.amount),
                 style: TextStyle(
+                    fontWeight: FontWeight.w500,
                     color: transaction.amount > 0
                         ? Colors.greenAccent[700]
                         : Colors.redAccent[400]),

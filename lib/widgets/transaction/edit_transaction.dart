@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/account/account_overview_bloc.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
+import 'package:open_budget/bloc/category/category_bloc.dart';
 import 'package:open_budget/bloc/transaction/transaction_list_bloc.dart';
 import 'package:open_budget/models/account.dart';
+import 'package:open_budget/models/category.dart';
 import 'package:open_budget/repository/account_repository.dart';
+import 'package:open_budget/widgets/category/category_list.dart';
+import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
 import '../../input_calculator/input_calculator.dart';
 import '../../models/transactions.dart';
 
@@ -35,6 +39,7 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
             children: [
               buildDropDown(context),
               buildTransactionAmount(),
+              buildTransactionCategory(),
               buildTransactionDescription(),
               buildSubmit()
             ],
@@ -155,4 +160,45 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
               }
             },
           ));
+
+  buildTransactionCategory() {
+    return Container(
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        child: BlocBuilder<CategoryBloc, CategoryState>(
+          builder: (context, state) {
+            if (state is CategoryLoaded) {
+              IconWithColor icon = iconMap[
+                  widget.transaction.category.target?.icon ?? "placeholder"]!;
+
+              return Container(
+                  child: ListTile(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        title: const Text('Select category'),
+                      ),
+                      body: CategoryList(
+                        onCategorySelected: (category) {
+                          Navigator.pop(context);
+                          setState(() {
+                            widget.transaction.category.target = category;
+                          });
+                        },
+                      ),
+                    ),
+                  ));
+                },
+                leading: CircleAvatar(
+                    backgroundColor: icon.backgroundColor,
+                    child: Icon(icon.iconData, color: icon.iconColor)),
+                title: Text(
+                    widget.transaction.category.target?.name ?? 'Category'),
+              ));
+            } else {
+              return const Text('Loading...');
+            }
+          },
+        ));
+  }
 }

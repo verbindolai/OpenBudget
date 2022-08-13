@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
+import 'package:open_budget/bloc/category/category_bloc.dart';
 import 'package:open_budget/bloc/navigation/navigation_bloc.dart';
+import 'package:open_budget/repository/category_repository.dart';
 import 'package:open_budget/repository/transaction_repository.dart';
 import 'package:open_budget/widgets/frame.dart';
 import 'bloc/account/account_overview_bloc.dart';
@@ -36,6 +38,9 @@ class App extends StatelessWidget {
         RepositoryProvider<TransactionRepository>(
           create: (context) => TransactionRepository(objectBox),
         ),
+        RepositoryProvider<CategoryRepository>(
+          create: (context) => CategoryRepository(objectBox),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -57,6 +62,10 @@ class App extends StatelessWidget {
               create: (context) =>
                   AccountSelectionBloc(context.read<AccountRepository>())
                     ..add(LoadAccountSelection())),
+          BlocProvider(
+              create: (context) =>
+                  CategoryBloc(context.read<CategoryRepository>())
+                    ..add(const LoadCategories())),
         ],
         child: MaterialApp(
             home: const Frame(),

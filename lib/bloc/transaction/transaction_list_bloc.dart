@@ -23,7 +23,7 @@ class TransactionListBloc
       _transactionRepository.save(event.transaction);
       if (state is RecentTransactions) {
         emit(RecentTransactions(
-            _transactionRepository.getLastTransactionsByDate(count: 3)));
+            _transactionRepository.getLastTransactionsByDate(count: 5)));
       } else if (state is AccountTransactions) {
         int id = (state as AccountTransactions).accountId;
         emit(AccountTransactions(
@@ -36,7 +36,7 @@ class TransactionListBloc
     });
     on<DisplayRecentTransactions>((event, emit) {
       emit(RecentTransactions(
-          _transactionRepository.getLastTransactionsByDate(count: 3)));
+          _transactionRepository.getLastTransactionsByDate(count: 5)));
     });
   }
 }
