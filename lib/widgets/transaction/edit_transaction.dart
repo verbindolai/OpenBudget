@@ -8,8 +8,9 @@ import 'package:open_budget/models/account.dart';
 import 'package:open_budget/models/category.dart';
 import 'package:open_budget/repository/account_repository.dart';
 import 'package:open_budget/widgets/category/category_list.dart';
-import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
-import '../../input_calculator/input_calculator.dart';
+import 'package:open_budget/widgets/shared/icon_picker/icon_picker.dart';
+import 'package:open_budget/widgets/shared/input_calculator/src/calculator_text_form_field.dart';
+import 'package:open_budget/widgets/shared/input_calculator/src/themes.dart';
 import '../../models/transactions.dart';
 
 class EditTransactionPage extends StatefulWidget {
@@ -65,6 +66,10 @@ class _EditTransactionPageState extends State<EditTransactionPage> {
   Widget buildTransactionAmount() => Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: CalculatorTextFormField(
+        numberWindowBackgroundColor: Color(0xFF001d3d),
+        numberWindowTextColor: Colors.white,
+        normalButtonColor: Color(0xFF001d3d),
+        operatorButtonColor: Color(0xFF003566),
         initialValue: widget.transaction.amount,
         validator: (value) {
           if (value == "0.0") {

@@ -71,6 +71,8 @@ class InputCalculatorArgs {
   final String? title;
   final double? initialValue;
   final BoxDecoration? boxDecoration;
+  final Color? numberWindowBackgroundColor;
+  final Color? numberWindowTextColor;
   final Color? appBarBackgroundColor;
   final Color? operatorButtonColor;
   final Color? normalButtonColor;
@@ -85,6 +87,8 @@ class InputCalculatorArgs {
     this.title,
     this.initialValue,
     this.boxDecoration,
+    this.numberWindowBackgroundColor,
+    this.numberWindowTextColor,
     this.appBarBackgroundColor,
     this.operatorButtonColor,
     this.normalButtonColor,
@@ -415,7 +419,7 @@ class _CalculatorState extends State<Calculator> {
               right: 0.0,
               child: Container(
                 height: inputContainerHeight,
-                color: Colors.white,
+                color: widget.args?.numberWindowBackgroundColor,
                 padding: EdgeInsets.only(
                   top: 16.0,
                   left: 16.0,
@@ -446,6 +450,7 @@ class _CalculatorState extends State<Calculator> {
                         hintText: '0',
                       ),
                       style: TextStyle(
+                        color: widget.args!.numberWindowTextColor,
                         fontSize: 40.0,
                         fontWeight: FontWeight.w600,
                       ),

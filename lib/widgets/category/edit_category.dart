@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/category/category_bloc.dart';
 import 'package:open_budget/models/category.dart';
-
-import '../icon_picker/icon_picker.dart';
+import 'package:open_budget/widgets/shared/icon_picker/icon_picker.dart';
 
 class EditCategory extends StatefulWidget {
   final Category category;
@@ -26,43 +25,44 @@ class _EditCategoryState extends State<EditCategory> {
       ),
       body: Form(
         key: formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            ListTile(
-              leading: buildCategoryIcon(),
-              title: buildCategoryName(),
-            ),
-            buildSubmit()
-          ],
+        child: Card(
+          margin: const EdgeInsets.only(top: 16),
+          color: Color(0xFF003566),
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(16),
+            children: [
+              ListTile(
+                leading: buildCategoryIcon(),
+                title: buildCategoryName(),
+              ),
+              buildSubmit()
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget buildCategoryName() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Name',
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) {
-          return null;
-        },
-        maxLength: 128,
-        onSaved: (value) => {
-          if (value != null) {widget.category.name = value}
-        },
+    return TextFormField(
+      initialValue: widget.category.name,
+      decoration: const InputDecoration(
+        labelText: 'Name',
       ),
+      validator: (value) {
+        return null;
+      },
+      maxLength: 128,
+      onSaved: (value) => {
+        if (value != null) {widget.category.name = value}
+      },
     );
   }
 
   Widget buildCategoryIcon() {
     return IconPicker(
-      iconSize: 35,
-      buttonSize: 30,
+      initialIcon: iconMap[widget.category.icon],
       onChange: (iconMapEntry) => {widget.category.icon = iconMapEntry.key},
     );
   }

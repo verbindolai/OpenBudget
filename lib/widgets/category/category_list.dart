@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_budget/bloc/category/category_bloc.dart';
 import 'package:open_budget/models/category.dart';
 import 'package:open_budget/widgets/category/edit_category.dart';
-import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
+import 'package:open_budget/widgets/shared/icon_picker/icon_picker.dart';
 
 class CategoryList extends StatefulWidget {
   final Function(Category category) onCategorySelected;
@@ -25,6 +25,7 @@ class _CategoryListState extends State<CategoryList> {
             IconWithColor iwc = iconMap[category.icon]!;
 
             return ListTile(
+              contentPadding: EdgeInsets.all(4),
               onTap: () {
                 widget.onCategorySelected(category);
               },
@@ -33,7 +34,10 @@ class _CategoryListState extends State<CategoryList> {
                   child: Icon(iwc.iconData, color: iwc.iconColor)),
               title: Text(category.name),
               trailing: IconButton(
-                icon: const Icon(Icons.edit),
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -47,23 +51,27 @@ class _CategoryListState extends State<CategoryList> {
           }).toList();
 
           tiles.add(ListTile(
-            leading: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EditCategory(category: Category("", "placeholder")),
-                  ),
-                );
-              },
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      EditCategory(category: Category("", "placeholder")),
+                ),
+              );
+            },
+            leading: Icon(
+              Icons.add,
+              color: Colors.white,
             ),
             title: Text("Add Category"),
           ));
 
-          return ListView(
-            children: tiles,
+          return Container(
+            padding: const EdgeInsets.all(8),
+            child: ListView(
+              children: tiles,
+            ),
           );
         } else {
           return Container();

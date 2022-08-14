@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:open_budget/widgets/account/account_overview.dart';
-import 'package:open_budget/widgets/category/edit_category.dart';
-import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
 import 'package:open_budget/widgets/transaction/transaction_list.dart';
 
 import '../../bloc/account/account_overview_bloc.dart';

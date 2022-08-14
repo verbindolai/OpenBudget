@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:open_budget/bloc/account/account_selection_bloc.dart';
 import 'package:open_budget/models/transactions.dart';
-import 'package:open_budget/widgets/icon_picker/icon_picker.dart';
+import 'package:open_budget/widgets/shared/icon_picker/icon_picker.dart';
 import 'package:open_budget/widgets/transaction/edit_transaction.dart';
 import '../../bloc/transaction/transaction_list_bloc.dart';
 

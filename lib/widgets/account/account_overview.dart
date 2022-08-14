@@ -9,6 +9,7 @@ import 'package:open_budget/widgets/transaction/transaction_list.dart';
 import '../../models/account.dart';
 import 'edit_account.dart';
 import 'package:confirm_dialog/confirm_dialog.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AccountOverview extends StatefulWidget {
   const AccountOverview({Key? key}) : super(key: key);
@@ -193,27 +194,81 @@ class AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 100,
-        child: Row(children: [
-          buildAccountColorBox(),
-          Expanded(
-              child: Container(
-                  decoration: const BoxDecoration(
-                      color: Color(0xFF003566),
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0))),
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const Icon(Icons.account_balance_wallet),
-                        buildAccountInformation(context),
-                        buildButtonContainer(context)
-                      ])))
-        ]));
+    return Slidable(
+      key: const ValueKey(0),
+
+      // The start action pane is the one at the left or the top side.
+      startActionPane: ActionPane(
+        // A motion is a widget used to control how the pane animates.
+        motion: const ScrollMotion(),
+
+        // A pane can dismiss the Slidable.
+        dismissible: DismissiblePane(onDismissed: () {}),
+
+        // All actions are defined in the children parameter.
+        children: [
+          // A SlidableAction can have an icon and/or a label.
+          SlidableAction(
+            onPressed: (context) {},
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
+          ),
+          SlidableAction(
+            onPressed: (context) {},
+            backgroundColor: Color(0xFF21B7CA),
+            foregroundColor: Colors.white,
+            icon: Icons.share,
+            label: 'Share',
+          ),
+        ],
+      ),
+
+      // The end action pane is the one at the right or the bottom side.
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            // An action can be bigger than the others.
+            flex: 2,
+            onPressed: (context) {},
+            backgroundColor: Color(0xFF7BC043),
+            foregroundColor: Colors.white,
+            icon: Icons.archive,
+            label: 'Archive',
+          ),
+          SlidableAction(
+            onPressed: (context) {},
+            backgroundColor: Color(0xFF0392CF),
+            foregroundColor: Colors.white,
+            icon: Icons.save,
+            label: 'Save',
+          ),
+        ],
+      ),
+      child: SizedBox(
+          height: 100,
+          child: Row(children: [
+            buildAccountColorBox(),
+            Expanded(
+                child: Container(
+                    decoration: const BoxDecoration(
+                        color: Color(0xFF003566),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0))),
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Icon(Icons.account_balance_wallet),
+                          buildAccountInformation(context),
+                          buildButtonContainer(context)
+                        ])))
+          ])),
+    );
   }
 
   Widget buildAccountColorBox() {
@@ -303,6 +358,7 @@ class AccountTile extends StatelessWidget {
     }
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           onTap: () {},

@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:open_budget/widgets/shared/input_calculator/src/calculator_text_form_field.dart';
+import 'package:open_budget/widgets/shared/input_calculator/src/themes.dart';
 import '../../bloc/account/account_overview_bloc.dart';
-import '../../input_calculator/input_calculator.dart';
 import '../../models/account.dart';
 
 const List<Color> colors = [
@@ -144,7 +145,8 @@ class _EditAccountState extends State<EditAccount> {
             });
       },
       trailing: OutlinedButton(
-          child: Text(widget.account.currency),
+          child: Text(widget.account.currency,
+              style: TextStyle(color: Colors.white)),
           onPressed: () {
             showCurrencyPicker(
                 context: context,
@@ -215,6 +217,10 @@ class _EditAccountState extends State<EditAccount> {
       ));
 
   Widget buildAccountBalance() => CalculatorTextFormField(
+        numberWindowBackgroundColor: Color(0xFF001d3d),
+        numberWindowTextColor: Colors.white,
+        normalButtonColor: Color(0xFF001d3d),
+        operatorButtonColor: Color(0xFF003566),
         validator: (value) {
           if (value!.isEmpty) {
             return 'Please enter an initial balance';

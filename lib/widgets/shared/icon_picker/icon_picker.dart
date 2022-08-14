@@ -117,15 +117,17 @@ class _IconPickerDialog extends StatelessWidget {
 }
 
 class IconPicker extends StatefulWidget {
-  final double iconSize;
-  final double buttonSize;
+  final IconWithColor? initialIcon;
+  final double? iconSize;
+  final double? buttonSize;
   final Function(MapEntry<String, IconWithColor>) onChange;
 
   const IconPicker(
       {Key? key,
-      required this.iconSize,
-      required this.buttonSize,
-      required this.onChange})
+      this.iconSize,
+      this.buttonSize,
+      required this.onChange,
+      this.initialIcon})
       : super(key: key);
 
   @override
@@ -134,6 +136,14 @@ class IconPicker extends StatefulWidget {
 
 class _IconPickerState extends State<IconPicker> {
   IconWithColor icon = placeholder;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialIcon != null) {
+      icon = widget.initialIcon!;
+    }
+  }
 
   Future<void> _showIconPickerDialog() async {
     final MapEntry<String, IconWithColor>? result = await Navigator.push(

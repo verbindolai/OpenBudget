@@ -11,6 +11,8 @@ mixin BaseTextField {
   String? get title;
   double get initialValue;
   BoxDecoration? get boxDecoration;
+  Color get numberWindowBackgroundColor;
+  Color get numberWindowTextColor;
   Color? get appBarBackgroundColor;
   Color get operatorButtonColor;
   Color get normalButtonColor;
@@ -26,6 +28,8 @@ mixin BaseTextField {
       title: title ?? '',
       initialValue: initialValue,
       boxDecoration: boxDecoration,
+      numberWindowBackgroundColor: numberWindowBackgroundColor,
+      numberWindowTextColor: numberWindowTextColor,
       appBarBackgroundColor: appBarBackgroundColor,
       operatorButtonColor: operatorButtonColor,
       operatorTextButtonColor: operatorTextButtonColor,
